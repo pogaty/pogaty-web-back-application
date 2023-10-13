@@ -13,6 +13,7 @@
 	
 	<modules>
 		<module>naming-server</module>
+		<module>client-microservice</module>
 	</modules>
 	
 	<dependencies>
