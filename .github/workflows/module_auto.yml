@@ -10,6 +10,5 @@ jobs:
       - uses: actions/setup-java@v1.4.3
         with:
           java-version: 1.7
-      - uses: education/autograding@v1
       - name: Build and Test with Maven
         run: mvn verify --file pom.xml
