@@ -16,6 +16,13 @@
             "request": "launch",
             "mainClass": "poga.docs.namingserver.EurekaNamingServerApplication",
             "projectName": "naming-server"
+        },
+        {
+            "type": "java",
+            "name": "ClientApplication",
+            "request": "launch",
+            "mainClass": "poga.docs.clientmicroservice.ClientMicroserviceApplication",
+            "projectName": "client-microservice"
         }
     ]
 }
