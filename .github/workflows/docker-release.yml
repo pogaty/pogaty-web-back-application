@@ -22,13 +22,13 @@ jobs:
           username: mizpuno
           password: dckr_pat_ChJw8TImh9mnJx3L7U8j4lJWBLQ
 
-      # The section below provide " naming-server " module.  
+      # The section below provides "naming-server" module.
       - name: Extract metadata (tags, labels) for Naming Server
         id: meta-naming-server
         uses: docker/metadata-action@v3
         with:
-          images: mizpuno/backend-application-demo.naming-server-v1.0
-          
+          images: mizpuno/backend-application-demo:latest
+
       - name: Build and push Naming Server image
         uses: docker/build-push-action@v2
         with:
@@ -37,35 +37,35 @@ jobs:
           push: true
           tags: ${{ steps.meta-naming-server.outputs.tags }}
           labels: ${{ steps.meta-naming-server.outputs.labels }}
-          
-      # The section below provide " client-microservice " module.  
+
+      # The section below provides "client-microservice" module.
       - name: Extract metadata (tags, labels) for Client Microservice
         id: meta-client-module
         uses: docker/metadata-action@v3
         with:
-          images: mizpuno/backend-application-demo.client-microservice-v1.0
-            
+          images: mizpuno/backend-application-demo:latest
+
       - name: Build and push Client Microservice image
         uses: docker/build-push-action@v2
         with:
-            context: ./client-microservice
-            file: ./client-microservice/Dockerfile
-            push: true
-            tags: ${{ steps.meta-client-module.outputs.tags }}
-            labels: ${{ steps.meta-client-module.outputs.labels }}
-            
-      # The section below provide " partner-microservice " module.        
-      - name: Extract metadata (tags, labels) for Client Microservice
+          context: ./client-microservice
+          file: ./client-microservice/Dockerfile
+          push: true
+          tags: ${{ steps.meta-client-module.outputs.tags }}
+          labels: ${{ steps.meta-client-module.outputs.labels }}
+
+      # The section below provides "partner-microservice" module.
+      - name: Extract metadata (tags, labels) for Partner Microservice
         id: meta-partner-module
         uses: docker/metadata-action@v3
         with:
-          images: mizpuno/backend-application-demo.partner-microservice-v1.0  
-        
+          images: mizpuno/backend-application-demo:latest
+
       - name: Build and push Partner Microservice image
         uses: docker/build-push-action@v2
         with:
-            context: ./partner-microservice
-            file: ./partner-microservice/Dockerfile
-            push: true
-            tags: ${{ steps.meta-partner-module.outputs.tags }}
-            labels: ${{ steps.meta-partner-module.outputs.labels }}
+          context: ./partner-microservice
+          file: ./partner-microservice/Dockerfile
+          push: true
+          tags: ${{ steps.meta-partner-module.outputs.tags }}
+          labels: ${{ steps.meta-partner-module.outputs.labels }}
