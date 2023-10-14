@@ -1,0 +1,10 @@
+version: '3'
+services:
+  naming-server:
+    image: naming-server:1.0
+    ports:
+      - "8761:8761"
+  client-microservice:
+    image: client-microservice:1.0
+    ports:
+      - "8000:8000"
