@@ -12,7 +12,6 @@
 	</properties>
 	
 	<modules>
-		<module>naming-server</module>
 		<module>client-microservice</module>
 		<module>partner-microservice</module>
 	</modules>
