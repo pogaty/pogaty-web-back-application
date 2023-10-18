@@ -22,22 +22,6 @@ jobs:
           username: mizpuno
           password: dckr_pat_ChJw8TImh9mnJx3L7U8j4lJWBLQ
 
-      # The section below provides "naming-server" module.
-      - name: Extract metadata (tags, labels) for Naming Server
-        id: meta-naming-server
-        uses: docker/metadata-action@v3
-        with:
-          images: mizpuno/pogaty-backend-naming-service
-
-      - name: Build and push Naming Server image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./naming-server
-          file: ./naming-server/Dockerfile
-          push: true
-          tags: ${{ steps.meta-naming-server.outputs.tags }}
-          labels: ${{ steps.meta-naming-server.outputs.labels }}
-
       # The section below provides "client-microservice" module.
       - name: Extract metadata (tags, labels) for Client Microservice
         id: meta-client-module
