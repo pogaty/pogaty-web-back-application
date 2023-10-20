@@ -21,9 +21,10 @@
 ก่อนอื่นต้องกำหนด scope ก่อนว่างานที่ได้รับมอบหมายนั้นมันควร clone จาก branch ไหนมาทำ เช่น อยากทำ entity ที่อยู่ใน client-microservice ก็ให้ clone ตัว client microservice หลักเปล่าๆที่ยังไม่มี entity อื่นผสมอยู่มาหรือถ้า clone แล้วมี entity อื่นติดมาอย่าไปแก้ไข entity นั้นใน branch ที่เราจะทำ entity ใหม่เพราะมันจะเกิด conflict แล้วจะงงเวลาแก้
 
 1. เช็คก่อนว่า feature ที่เราจะทำมีรหัส feature อะไรในแอพ jira ตามรูป
+
 ![App Screenshot](https://cdn.pic.in.th/file/picinth/Screenshot-2023-10-19-140923.md.png)
 
-2. เช่นรหัสเป็น PDS-6 เวลาสร้าง branch ให้ใช้คำสั่ง
+3. เช่นรหัสเป็น PDS-6 เวลาสร้าง branch ให้ใช้คำสั่ง
 
 ```bash
    git checkout <clone_target_branch>
