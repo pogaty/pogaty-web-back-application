@@ -9,6 +9,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.ClientDTO;
+import poga.docs.clientmicroservice.models.Problem;
+import poga.docs.clientmicroservice.models.ProblemDTO;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
@@ -17,6 +19,7 @@ public interface ClientMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateClientFromDto(ClientDTO dto, @MappingTarget Client entity);
 
-    // Add other mapping methods if needed
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateProblemFromDto(ProblemDTO dto , @MappingTarget Problem problem);
 }
 
