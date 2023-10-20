@@ -8,4 +8,6 @@ import poga.docs.clientmicroservice.models.Client;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
     public List<Client> findAll();
+    public List<Client> findByUsername(String username);
+    List<Client> findByUsernameStartingWith(String prefix);
 }

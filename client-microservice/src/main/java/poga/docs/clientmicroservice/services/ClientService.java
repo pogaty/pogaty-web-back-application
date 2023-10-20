@@ -20,4 +20,12 @@ public class ClientService {
     public List<Client> findAllClients() {
         return this.clientRepository.findAll();
     }
+
+    public List<Client> findByUserNameClients(String username){
+        return this.clientRepository.findByUsername(username);
+    }
+
+    public List<Client> findByUsernameStartingWithClients(String prefix){
+        return this.clientRepository.findByUsernameStartingWith(prefix);
+    }
 }
