@@ -18,7 +18,7 @@
 วิธีการทำงานตามที่ได้ assign ไว้เริ่มต้นจากการสร้าง branch ของหัวข้องานนั้นๆ ก่อนเป็นอันดับแรก
 
 ### Branch
-ก่อนอื่นต้องกำหนด scope ก่อนว่างานที่ได้รับมอบหมายนั้นมันควร clone จาก branch ไหนมาทำ เช่น อยากทำฟังก์ชั่น Profile feature แปลว่ามันเป็นฟังก์ชั่น นึงที่อยู่ใน Profile structure ดังนั้นเราต้องสร้าง branch ใหม่จากการ clone branch " Profile structure " มา
+ก่อนอื่นต้องกำหนด scope ก่อนว่างานที่ได้รับมอบหมายนั้นมันควร clone จาก branch ไหนมาทำ เช่น อยากทำ entity ที่อยู่ใน client-microservice ก็ให้ clone ตัว client microservice หลักเปล่าๆที่ยังไม่มี entity อื่นผสมอยู่มาหรือถ้า clone แล้วมี entity อื่นติดมาอย่าไปแก้ไข entity นั้นใน branch ที่เราจะทำ entity ใหม่เพราะมันจะเกิด conflict แล้วจะงงเวลาแก้
 
 1. เช็คก่อนว่า feature ที่เราจะทำมีรหัส feature อะไรในแอพ jira ตามรูป
 ![App Screenshot](https://cdn.pic.in.th/file/picinth/Screenshot-2023-10-19-140923.md.png)
