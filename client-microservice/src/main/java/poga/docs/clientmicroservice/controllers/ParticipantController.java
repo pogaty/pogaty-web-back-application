@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-package poga.docs.clientmicroservice.ClientMapper;
+import poga.docs.clientmicroservice.ServiceMapper;
 
 import poga.docs.clientmicroservice.models.Participant;
 import poga.docs.clientmicroservice.models.ParticipantDTO;
@@ -19,11 +19,11 @@ import poga.docs.clientmicroservice.services.ParticipantService;
 public class ParticipantController {
     private final ParticipantService participantService;
     private final ParticipantRepository participantRepository;
-    private final ClientMapper clientMapper;
+    private final ServiceMapper clientMapper;
 
     @Autowired
     public ParticipantController(ParticipantService participantService, ParticipantRepository participantRepository,
-            ClientMapper clientMapper) {
+    ServiceMapper clientMapper) {
         this.participantService = participantService;
         this.participantRepository = participantRepository;
         this.clientMapper = clientMapper;
