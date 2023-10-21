@@ -15,9 +15,8 @@ import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
 
 @Mapper(componentModel = "spring")
-public interface ClientMapper {
+public interface ServiceMapper {
     
-
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateClientFromDto(ClientDTO dto, @MappingTarget Client entity);
 

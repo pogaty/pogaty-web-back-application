@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import poga.docs.clientmicroservice.ClientMapper;
+import poga.docs.clientmicroservice.ServiceMapper;
 import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
@@ -27,15 +27,15 @@ import poga.docs.clientmicroservice.services.ProblemService;
 public class ProblemController {
     private final ProblemService problemService;
     private final ProblemRepository problemRepository;
-    private final ClientMapper clientMapper;
+    private final ServiceMapper serviceMapper;
 
     
     @Autowired
     public ProblemController(ProblemService problemService, ProblemRepository problemRepository,
-            ClientMapper clientMapper) {
+            ServiceMapper serviceMapper) {
         this.problemService = problemService;
         this.problemRepository = problemRepository;
-        this.clientMapper = clientMapper;
+        this.serviceMapper = serviceMapper;
     }
 
     @GetMapping
@@ -99,7 +99,7 @@ public class ProblemController {
         }
 
         Problem problem = optProblem.get();
-        clientMapper.updateProblemFromDto(problemDTO, problem);
+        serviceMapper.updateProblemFromDto(problemDTO, problem);
         problemRepository.save(problem);
         return ResponseEntity.ok("Problem updated");
     }

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import poga.docs.clientmicroservice.ClientMapper;
+import poga.docs.clientmicroservice.ServiceMapper;
 import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.ClientDTO;
 import poga.docs.clientmicroservice.repositories.ClientRepository;
@@ -18,13 +18,13 @@ import java.util.Optional;
 public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
-    private final ClientMapper clientMapper;
+    private final ServiceMapper serviceMapper;
 
     @Autowired
-    public ClientController(ClientService clientService, ClientRepository clientRepository, ClientMapper clientMapper) {
+    public ClientController(ClientService clientService, ClientRepository clientRepository, ServiceMapper serviceMapper) {
         this.clientService = clientService;
         this.clientRepository = clientRepository;
-        this.clientMapper = clientMapper;
+        this.serviceMapper = serviceMapper;
     }
 
     @GetMapping
@@ -88,7 +88,7 @@ public class ClientController {
         }
 
         Client client = optClient.get();
-        clientMapper.updateClientFromDto(clientDTO, client);
+        serviceMapper.updateClientFromDto(clientDTO, client);
         clientRepository.save(client);
         return ResponseEntity.ok("Client updated");
     }

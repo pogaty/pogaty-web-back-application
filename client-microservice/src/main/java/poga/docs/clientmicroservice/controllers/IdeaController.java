@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import poga.docs.clientmicroservice.ClientMapper;
+import poga.docs.clientmicroservice.ServiceMapper;
 import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.IdeaDTO;
 import poga.docs.clientmicroservice.repositories.IdeaRepository;
@@ -27,13 +27,13 @@ import poga.docs.clientmicroservice.services.IdeaService;
 public class IdeaController {
     private final IdeaService ideaService;
     private final IdeaRepository ideaRepository;
-    private final ClientMapper clientMapper;
+    private final ServiceMapper serviceMapper;
 
     @Autowired
-    IdeaController(IdeaService ideaService, IdeaRepository ideaRepository,ClientMapper clientMapper) {
+    IdeaController(IdeaService ideaService, IdeaRepository ideaRepository,ServiceMapper serviceMapper) {
         this.ideaService = ideaService;
         this.ideaRepository = ideaRepository;
-        this.clientMapper = clientMapper;
+        this.serviceMapper = serviceMapper;
     }
 
     @GetMapping
@@ -97,7 +97,7 @@ public class IdeaController {
         }
 
         Idea idea = optIdea.get();
-        clientMapper.updateIdeaFromDto(ideaDTO, idea);
+        serviceMapper.updateIdeaFromDto(ideaDTO, idea);
         ideaRepository.save(idea);
         return ResponseEntity.ok("Idea updated");
     }
