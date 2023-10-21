@@ -29,9 +29,7 @@ public class Participant {
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
-    Participant(){
-        
-    }
+    Participant(){}
 
     public Participant(Long participant_id, String role, Client client) {
         this.participant_id = participant_id;
