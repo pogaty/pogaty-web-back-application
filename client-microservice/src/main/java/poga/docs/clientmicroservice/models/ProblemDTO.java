@@ -2,8 +2,6 @@ package poga.docs.clientmicroservice.models;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

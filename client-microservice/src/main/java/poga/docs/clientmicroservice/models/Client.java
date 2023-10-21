@@ -13,8 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import poga.docs.clientmicroservice.models.Problem;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity

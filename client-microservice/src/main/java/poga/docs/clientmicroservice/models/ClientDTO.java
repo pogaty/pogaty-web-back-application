@@ -1,7 +1,5 @@
 package poga.docs.clientmicroservice.models;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClientDTO {
