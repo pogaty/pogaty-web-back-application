@@ -61,9 +61,7 @@ public class Client {
                 inverseJoinColumns = @JoinColumn(name="problem_id" , referencedColumnName = "problem_id"))
     private List<Problem> problem;
 
-    Client(){
-        
-    }
+    Client(){}
 
     public Client(Long client_id, String username, String password, String firstname, String lastname, String gender,
             String phoneNumber, String mail, String address, String description, Long rating, List<Problem> problem) {
