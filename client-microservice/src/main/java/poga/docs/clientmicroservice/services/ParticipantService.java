@@ -25,4 +25,8 @@ public class ParticipantService {
     public List<Participant> findByRolePaticipant(String role) {
         return this.participantRepository.findByRole(role);
     }
+
+    public List<Participant> findByRolePaticipantStartingWith(String prefix) {
+        return this.participantRepository.findByRoleStartingWith(prefix);
+    }
 }

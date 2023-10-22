@@ -12,9 +12,6 @@ public class IdeaDTO {
     @JsonProperty("board")
     private String board;
 
-    @JsonProperty("category")
-    private String category;
-
     @JsonProperty("agreement")
     private int agreement;
 
@@ -40,14 +37,6 @@ public class IdeaDTO {
 
     public void setBoard(String board) {
         this.board = board;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public int getAgreement() {

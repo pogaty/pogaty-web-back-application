@@ -38,38 +38,58 @@ public class ProblemController {
         this.serviceMapper = serviceMapper;
     }
 
+    //for get all list of Problem
     @GetMapping
     public ResponseEntity<List<Problem>> getAllProblem() {
         List<Problem> problem = problemService.findAllProblem();
         return ResponseEntity.ok(problem);
     }
 
-    @GetMapping("/search/{topic}")
-    public ResponseEntity<?> getTopicByProblem(@PathVariable String topic) {
-        if (topic.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem Not Found");
+    // Select Problem By problem_id
+    @GetMapping("/{problem_id}")
+    public ResponseEntity getAllemployeeById(@PathVariable long problem_id) {
+        Optional<Problem> optProblem = problemRepository.findById(problem_id);
+        
+        // check if id exists in db
+        if (!optProblem.isPresent()) {
+            // return error message 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
+        
+        }
+        Problem emp = optProblem.get();
+        return ResponseEntity.ok(emp);
+    }
+
+    //Get category for tell list category  
+    @GetMapping("/{category}")
+    public ResponseEntity<?> getTopicByProblem(@PathVariable String category) {
+        if (category.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category Not Found");
         }
 
-        List<Problem> topics = problemService.findByTopicProblem(topic);
+        List<Problem> topics = problemService.findByCategoryProblem(category);
         return ResponseEntity.ok(topics);
     }
 
-    @GetMapping("/searchStarting/{topic}")
+    // For search problem by topic
+    @GetMapping("/search/{topic}")
     public ResponseEntity<?> getTopicStartingWithByProblem(@PathVariable String topic) {
         if (topic.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Topic Not Found");
         }
 
         List<Problem> topics = problemService.findByTopicProblemStartingWith(topic);
         return ResponseEntity.ok(topics);
     }
 
+    //Create problem can be repeated problem
     @PostMapping()
     public ResponseEntity<String> createProblem(@RequestBody Problem problem) {
         problemRepository.save(problem);
         return ResponseEntity.ok("Problem created");
     }
 
+    //Update problem by handle
     @PutMapping("/{problem_id}")
     public ResponseEntity<String> updateProblem(@PathVariable Long problem_id, @RequestBody Problem problem) {
         if (!problemRepository.existsById(problem_id)) {
@@ -77,6 +97,20 @@ public class ProblemController {
         }
         
         problem.setProblem_id(problem_id); // Ensure the problem_id is set
+        problemRepository.save(problem);
+        return ResponseEntity.ok("Problem updated");
+    }
+
+    //Update problem by specific parameter
+    @PatchMapping("/{problem_id}")
+    public ResponseEntity<String> partialUpdateProblem(@PathVariable Long problem_id, @RequestBody ProblemDTO problemDTO) {
+        Optional<Problem> optProblem = problemRepository.findById(problem_id);
+        if (!optProblem.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
+        }
+
+        Problem problem = optProblem.get();
+        serviceMapper.updateProblemFromDto(problemDTO, problem);
         problemRepository.save(problem);
         return ResponseEntity.ok("Problem updated");
     }
@@ -91,16 +125,5 @@ public class ProblemController {
         return ResponseEntity.ok("Problem deleted");
     }
 
-    @PatchMapping("/{problem_id}")
-    public ResponseEntity<String> partialUpdateProblem(@PathVariable Long problem_id, @RequestBody ProblemDTO problemDTO) {
-        Optional<Problem> optProblem = problemRepository.findById(problem_id);
-        if (!optProblem.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
-        }
-
-        Problem problem = optProblem.get();
-        serviceMapper.updateProblemFromDto(problemDTO, problem);
-        problemRepository.save(problem);
-        return ResponseEntity.ok("Problem updated");
-    }
+    
 }

@@ -10,9 +10,9 @@ import poga.docs.clientmicroservice.models.Client;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
     public List<Client> findAll();
-    public List<Client> findByUsername(String username);
-    List<Client> findByUsernameStartingWith(String prefix);
+    public Client findByUsername(String username);
+    public List<Client> findByUsernameStartingWith(String prefix);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE LOWER(c.username) = LOWER(:username)")
-    boolean existsByLowercaseUsername(@Param("username") String username);
+    public boolean existsByLowercaseUsername(@Param("username") String username);
 }

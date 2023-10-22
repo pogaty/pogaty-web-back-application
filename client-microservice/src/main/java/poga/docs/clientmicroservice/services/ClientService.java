@@ -21,7 +21,7 @@ public class ClientService {
         return this.clientRepository.findAll();
     }
 
-    public List<Client> findByUserNameClients(String username){
+    public Client findByUserNameClients(String username){
         return this.clientRepository.findByUsername(username);
     }
 

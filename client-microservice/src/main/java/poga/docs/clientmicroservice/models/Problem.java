@@ -10,8 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -29,10 +33,14 @@ public class Problem {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("category")
+    private String category;
+
     @JsonProperty("rating")
     private Long rating;
 
     @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime date;
 
     // Releationship to entity 1-->N
@@ -40,18 +48,26 @@ public class Problem {
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
+    @PrePersist
+    public void prePersist() {
+        date = LocalDateTime.now();
+    }
     Problem(){
 
     }
 
-    public Problem(Long problem_id, String topic, String description, Long rating, LocalDateTime date, Client client) {
+    
+    public Problem(Long problem_id, String topic, String description, String category, Long rating, LocalDateTime date,
+            Client client) {
         this.problem_id = problem_id;
         this.topic = topic;
         this.description = description;
+        this.category = category;
         this.rating = rating;
-        this.date = date;
+        this.date = LocalDateTime.now();
         this.client = client;
     }
+
 
     public Long getProblem_id() {
         return problem_id;
@@ -99,6 +115,14 @@ public class Problem {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     

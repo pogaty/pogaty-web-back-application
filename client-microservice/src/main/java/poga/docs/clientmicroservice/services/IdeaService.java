@@ -21,11 +21,11 @@ public class IdeaService {
         return this.ideaRepository.findAll();
     }
     
-    public List<Idea> findByHeaderIdea(String ideaHeader) {
+    public Idea findByHeaderIdea(String ideaHeader) {
         return this.ideaRepository.findByIdeaHeader(ideaHeader);
     }
 
-    public List<Idea> findIdeaByHeaderIdeaStartingWith(String prefix) {
+    public List<Idea> findByHeaderIdeaStartingWith(String prefix) {
         return this.ideaRepository.findByIdeaHeaderStartingWith(prefix);
     }
 }

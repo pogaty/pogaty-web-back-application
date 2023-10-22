@@ -8,6 +8,6 @@ import poga.docs.clientmicroservice.models.Idea;
 
 public interface IdeaRepository extends CrudRepository<Idea, Long>{
     public List<Idea> findAll();
-    public List<Idea> findByIdeaHeader(String ideaHeader);
-    List<Idea> findByIdeaHeaderStartingWith(String prefix);
+    public Idea findByIdeaHeader(String ideaHeader);
+    public List<Idea> findByIdeaHeaderStartingWith(String prefix);
 }

@@ -16,6 +16,9 @@ public class ProblemDTO {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("category")
+    private String category;
+
     @JsonProperty("rating")
     private Long rating;
 
@@ -60,6 +63,14 @@ public class ProblemDTO {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     

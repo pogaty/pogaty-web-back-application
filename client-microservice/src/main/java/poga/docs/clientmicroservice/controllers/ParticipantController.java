@@ -6,9 +6,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import poga.docs.clientmicroservice.ServiceMapper;
-
 import poga.docs.clientmicroservice.models.Participant;
 import poga.docs.clientmicroservice.models.ParticipantDTO;
 import poga.docs.clientmicroservice.repositories.ParticipantRepository;
@@ -29,14 +36,16 @@ public class ParticipantController {
         this.clientMapper = clientMapper;
     }
 
+    //get for all list participant
     @GetMapping
-    public ResponseEntity<List<Participant>> getAllClients() {
+    public ResponseEntity<List<Participant>> getAllParticipant() {
         List<Participant> participants = participantService.findAllPaticipant();
         return ResponseEntity.ok(participants);
     }
-
-    @GetMapping("/search/{role}")
-    public ResponseEntity<?> getUsernameClients(@PathVariable String role) {
+    
+    //get data to tell Client with heahder project
+    @GetMapping("/{role}")
+    public ResponseEntity<?> getRole(@PathVariable String role) {
         if (role.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("role Not Found");
         }
@@ -45,22 +54,25 @@ public class ParticipantController {
         return ResponseEntity.ok(participants);
     }
 
-    // @GetMapping("/searchStarting/{username}")
-    // public ResponseEntity<?> getUsernameStartingWithClients(@PathVariable String username) {
-    //     if (username.isEmpty()) {
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
-    //     }
+    //for search bar search role 
+    @GetMapping("/search/{role}")
+    public ResponseEntity<?> getSearchRole(@PathVariable String role) {
+        if (role.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("role Not Found");
+        }
 
-    //     List<Client> clients = participantService.findByUsernameStartingWithClients(username);
-    //     return ResponseEntity.ok(clients);
-    // }
+        List<Participant> participants = participantService.findByRolePaticipantStartingWith(role);
+        return ResponseEntity.ok(participants);
+    }
 
+    //Create participant can be repeated participant
     @PostMapping
-    public ResponseEntity<String> createClient(@RequestBody Participant participant) {
+    public ResponseEntity<String> createParticipant(@RequestBody Participant participant) {
         participantRepository.save(participant);
         return ResponseEntity.ok("Participant created");
     }
 
+    //Update participant by Participant
     @PutMapping("/{participant_id}")
     public ResponseEntity<String> updateClient(@PathVariable Long participant_id, @RequestBody Participant participant) {
         if (!participantRepository.existsById(participant_id)) {
@@ -72,18 +84,9 @@ public class ParticipantController {
         return ResponseEntity.ok("Participant updated");
     }
 
-    @DeleteMapping("/{participant_id}")
-    public ResponseEntity<String> deleteClient(@PathVariable Long participant_id) {
-        if (!participantRepository.existsById(participant_id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
-        }
-
-        participantRepository.deleteById(participant_id);
-        return ResponseEntity.ok("Participant deleted");
-    }
-
+    //Update participant by specific parameter
     @PatchMapping("/{participant_id}")
-    public ResponseEntity<String> partialUpdateClient(@PathVariable Long participant_id, @RequestBody ParticipantDTO participantDTO) {
+    public ResponseEntity<String> partialUpdateParticipant(@PathVariable Long participant_id, @RequestBody ParticipantDTO participantDTO) {
         Optional<Participant> optParticipant = participantRepository.findById(participant_id);
         if (!optParticipant.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
@@ -94,4 +97,17 @@ public class ParticipantController {
         participantRepository.save(participant);
         return ResponseEntity.ok("Participant updated");
     }
+
+    
+    @DeleteMapping("/{participant_id}")
+    public ResponseEntity<String> deleteParticipant(@PathVariable Long participant_id) {
+        if (!participantRepository.existsById(participant_id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
+        }
+
+        participantRepository.deleteById(participant_id);
+        return ResponseEntity.ok("Participant deleted");
+    }
+
+    
 }

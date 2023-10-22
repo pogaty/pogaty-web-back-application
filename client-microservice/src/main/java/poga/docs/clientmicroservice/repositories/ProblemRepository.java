@@ -8,6 +8,6 @@ import poga.docs.clientmicroservice.models.Problem;
 
 public interface ProblemRepository extends CrudRepository<Problem, Long>{
     public List<Problem> findAll();
-    public List<Problem> findByTopic(String topic);
-    List<Problem> findByTopicStartingWith(String prefix);
+    public List<Problem> findByCategory(String category);
+    public List<Problem> findByTopicStartingWith(String prefix);
 }
