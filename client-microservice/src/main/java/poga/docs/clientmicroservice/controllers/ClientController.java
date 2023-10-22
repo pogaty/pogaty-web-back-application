@@ -55,9 +55,19 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody Client client) {
+    String lowercaseUsername = client.getUsername().toLowerCase();
+    
+    // Check if a client with the same lowercase username exists
+    if (clientRepository.existsByLowercaseUsername(lowercaseUsername)) {
+        // A client with the same lowercase username already exists
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+    } else {
+        // Save the client
+        client.setUsername(lowercaseUsername); // Update the username to be lowercase
         clientRepository.save(client);
         return ResponseEntity.ok("Client created");
     }
+}
 
     @PutMapping("/{client_id}")
     public ResponseEntity<String> updateClient(@PathVariable Long client_id, @RequestBody Client client) {
