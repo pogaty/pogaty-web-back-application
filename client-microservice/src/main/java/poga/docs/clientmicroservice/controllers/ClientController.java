@@ -33,13 +33,13 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
-    @GetMapping("/search/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<?> getUsernameClients(@PathVariable String username) {
-        if (username.isEmpty()) {
+        Client clients = clientService.findByUserNameClients(username);
+        if (clients == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
         }
 
-        List<Client> clients = clientService.findByUserNameClients(username);
         return ResponseEntity.ok(clients);
     }
 
