@@ -29,4 +29,8 @@ public class ProblemService {
     public List<Problem> findByTopicProblemStartingWith(String prefix) {
         return this.problemRepository.findByTopicStartingWith(prefix);
     }
+
+    public List<Problem> findByCategory(String category) {
+        return this.problemRepository.findByCategory(category);
+    }
 }

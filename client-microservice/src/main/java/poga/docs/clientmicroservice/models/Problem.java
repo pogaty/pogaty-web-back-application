@@ -29,6 +29,9 @@ public class Problem {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("category")
+    private String category;
+
     @JsonProperty("rating")
     private Long rating;
 
@@ -44,9 +47,10 @@ public class Problem {
 
     }
 
-    public Problem(Long problem_id, String topic, String description, Long rating, LocalDateTime date, Client client) {
+    public Problem(Long problem_id, String topic, String category, String description, Long rating, LocalDateTime date, Client client) {
         this.problem_id = problem_id;
         this.topic = topic;
+        this.category = category;
         this.description = description;
         this.rating = rating;
         this.date = date;
@@ -99,6 +103,14 @@ public class Problem {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     

@@ -54,6 +54,16 @@ public class ProblemController {
         return ResponseEntity.ok(topics);
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<?> getProblemsByCategory(@PathVariable String category) {
+        List<Problem> problems = problemService.findByCategory(category);
+
+        if (problems.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem in category not found.");
+        }
+        return ResponseEntity.ok(problems);
+    }
+
     @GetMapping("/searchStarting/{topic}")
     public ResponseEntity<?> getTopicStartingWithByProblem(@PathVariable String topic) {
         if (topic.isEmpty()) {

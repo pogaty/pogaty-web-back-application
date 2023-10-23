@@ -13,6 +13,9 @@ public class ProblemDTO {
     @JsonProperty("topic")
     private String topic;
 
+    @JsonProperty("category")
+    private String category;
+
     @JsonProperty("description")
     private String description;
 
@@ -62,5 +65,11 @@ public class ProblemDTO {
         this.date = date;
     }
 
-    
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
