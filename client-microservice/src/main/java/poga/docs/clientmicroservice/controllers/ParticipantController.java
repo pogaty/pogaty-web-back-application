@@ -74,7 +74,7 @@ public class ParticipantController {
 
     //Update participant by Participant
     @PutMapping("/{participant_id}")
-    public ResponseEntity<String> updateClient(@PathVariable Long participant_id, @RequestBody Participant participant) {
+    public ResponseEntity<String> updateParticipant(@PathVariable Long participant_id, @RequestBody Participant participant) {
         if (!participantRepository.existsById(participant_id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
         }
