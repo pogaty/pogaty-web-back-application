@@ -43,30 +43,16 @@ public class IdeaController {
         return ResponseEntity.ok(idea);
     }
 
-    // Select idea By idea_id for show idea
-    @GetMapping("/{idea_id}")
-    public ResponseEntity getAllemployeeById(@PathVariable long idea_id) {
-        Optional<Idea> optIdea = ideaRepository.findById(idea_id);
-        
-        // check if id exists in db
-        if (!optIdea.isPresent()) {
-            // return error message 404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea Not Found");
-        
-        }
-        Idea emp = optIdea.get();
-        return ResponseEntity.ok(emp);
-    }
-
     // 
     @GetMapping("/{ideaHeader}")
     public ResponseEntity<?> getUsernameIdea(@PathVariable String ideaHeader) {
-        if (ideaHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ideaHeader Not Found");
+        Idea ideas = ideaRepository.findByIdeaHeader(ideaHeader);
+        
+        if (ideas == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea Not Found");
         }
 
-        Idea idea = ideaService.findByHeaderIdea(ideaHeader);
-        return ResponseEntity.ok(idea);
+        return ResponseEntity.ok(ideas);
     }
 
     //for search bar to find Idea by ideaHeader

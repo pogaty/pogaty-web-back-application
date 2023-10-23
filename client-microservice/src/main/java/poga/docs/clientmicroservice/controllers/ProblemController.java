@@ -61,7 +61,7 @@ public class ProblemController {
     }
 
     //Get category for tell list category  
-    @GetMapping("/{category}")
+    @GetMapping("/showes/{category}")
     public ResponseEntity<?> getTopicByProblem(@PathVariable String category) {
         if (category.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category Not Found");

@@ -41,29 +41,17 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
-    // Select Clients By client_id
-    @GetMapping("/{client_id}")
-    public ResponseEntity getAllemployeeById(@PathVariable long client_id) {
-        Optional<Client> optClient = clientRepository.findById(client_id);
-        
-        // check if id exists in db
-        if (!optClient.isPresent()) {
-            // return error message 404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
-        
-        }
-        Client emp = optClient.get();
-        return ResponseEntity.ok(emp);
-    }
 
     //Get username for check username exists
     @GetMapping("/{username}")
     public ResponseEntity<?> getUsernameClients(@PathVariable String username) {
-        if (username.isEmpty()) {
+        
+        Client clients = clientService.findByUserNameClients(username);
+        
+        if (clients == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
         }
-
-        Client clients = clientService.findByUserNameClients(username);
+        
         return ResponseEntity.ok(clients);
     }
 
