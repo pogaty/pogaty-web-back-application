@@ -18,7 +18,15 @@ public class CollaboratorService {
         this.collaboratorRepository = collaboratorRepository;
     }
 
-    public List<Collaborator> findAllCollaborators() {
-        return this.collaboratorRepository.findAll();
+    public List<Collaborator> findAllCollaborators(){
+        return this.collaboratorRepository.findAll(); 
+    }
+
+    // public List<Collaborator> findAllByIdCollaborators(Long campaign_id) {
+    //     return this.collaboratorRepository.findByCollab_id(campaign_id);
+    // }
+
+    public List<Collaborator> findByNameCollaboratorStartingWith(String prefix){
+        return this.collaboratorRepository.findByNameStartingWith(prefix); 
     }
 }

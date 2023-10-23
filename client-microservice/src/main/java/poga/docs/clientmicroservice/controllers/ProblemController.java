@@ -56,8 +56,8 @@ public class ProblemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
         
         }
-        Problem emp = optProblem.get();
-        return ResponseEntity.ok(emp);
+        Problem problems = optProblem.get();
+        return ResponseEntity.ok(problems);
     }
 
     //Get category for tell list category  
@@ -109,9 +109,9 @@ public class ProblemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
         }
 
-        Problem problem = optProblem.get();
-        serviceMapper.updateProblemFromDto(problemDTO, problem);
-        problemRepository.save(problem);
+        Problem problems = optProblem.get();
+        serviceMapper.updateProblemFromDto(problemDTO, problems);
+        problemRepository.save(problems);
         return ResponseEntity.ok("Problem updated");
     }
 

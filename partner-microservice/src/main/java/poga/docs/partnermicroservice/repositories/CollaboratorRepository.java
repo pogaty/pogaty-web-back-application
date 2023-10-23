@@ -8,4 +8,5 @@ import poga.docs.partnermicroservice.models.Collaborator;
 
 public interface CollaboratorRepository extends CrudRepository<Collaborator, Long> {
     public List<Collaborator> findAll();
+    public List<Collaborator> findByNameStartingWith(String prefix);
 }
