@@ -22,6 +22,9 @@ public class ProblemDTO {
     @JsonProperty("rating")
     private Long rating;
 
+    @JsonProperty("idea_visible")
+    private boolean ideaVisible;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime date;
 
@@ -72,4 +75,14 @@ public class ProblemDTO {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public boolean isIdeaVisible() {
+        return ideaVisible;
+    }
+
+    public void setIdeaVisible(boolean ideaVisible) {
+        this.ideaVisible = ideaVisible;
+    }
+
+    
 }

@@ -74,6 +74,19 @@ public class ProblemController {
         return ResponseEntity.ok(topics);
     }
 
+    @GetMapping("/timed/{problem_id}")
+    public ResponseEntity<String> getTimeAgoByTopicis(@PathVariable long problem_id) {
+        Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+
+        if (!problemOpt.isPresent()) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem topic doesn't found.");
+        }
+
+        Problem problem = problemOpt.get();
+        String time = problemService.getTimeAgo(problem.getDate());
+        return ResponseEntity.ok(time);
+    }
+
     @PostMapping()
     public ResponseEntity<String> createProblem(@RequestBody Problem problem) {
         problemRepository.save(problem);

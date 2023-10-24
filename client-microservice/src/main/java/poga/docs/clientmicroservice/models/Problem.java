@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -21,7 +22,7 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("problem_id")
     @Column(name = "problem_id")
-    private Long problem_id;
+    private Long id;
     
     @JsonProperty("topic")
     private String topic;
@@ -35,7 +36,11 @@ public class Problem {
     @JsonProperty("rating")
     private Long rating;
 
+    @JsonProperty("idea_visible")
+    private boolean ideaVisible;
+
     @JsonProperty("date")
+    @JsonFormat(pattern = "dd:MM:yyyy:HH:mm")
     private LocalDateTime date;
 
     // Releationship to entity 1-->N
@@ -44,25 +49,26 @@ public class Problem {
     private Client client;
 
     Problem(){
+        this.date = LocalDateTime.now();
+     }
 
-    }
-
-    public Problem(Long problem_id, String topic, String category, String description, Long rating, LocalDateTime date, Client client) {
-        this.problem_id = problem_id;
+    public Problem(Long id, String topic, String category, String description, Long rating, Client client) {
+        super();
+        this.id = id;
         this.topic = topic;
         this.category = category;
         this.description = description;
         this.rating = rating;
-        this.date = date;
+        this.ideaVisible = false;
         this.client = client;
     }
 
     public Long getProblem_id() {
-        return problem_id;
+        return id;
     }
 
-    public void setProblem_id(Long problem_id) {
-        this.problem_id = problem_id;
+    public void setProblem_id(Long id) {
+        this.id = id;
     }
 
     public String getTopic() {
@@ -113,5 +119,12 @@ public class Problem {
         this.category = category;
     }
 
-    
+    public boolean isIdeaVisible() {
+        return ideaVisible;
+    }
+
+    public void setIdeaVisible(boolean ideaVisible) {
+        this.ideaVisible = ideaVisible;
+    }
+
 }
