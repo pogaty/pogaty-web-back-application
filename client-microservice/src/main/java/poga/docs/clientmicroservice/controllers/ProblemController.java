@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poga.docs.clientmicroservice.ServiceMapper;
+import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
@@ -122,6 +123,20 @@ public class ProblemController {
         problem.setProblem_id(problem_id); // Ensure the problem_id is set
         problemRepository.save(problem);
         return ResponseEntity.ok("Problem updated");
+    }
+
+    @PutMapping("/idea/{problem_id}") 
+    public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @RequestBody Idea idea) {
+        Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+
+        if (!problemOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
+        }
+
+        Problem problem = problemOpt.get();
+        problem.getIdeas().add(idea);
+        problemRepository.save(problem);
+        return ResponseEntity.ok("new idea has created");
     }
 
     //Update problem by specific parameter
