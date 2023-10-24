@@ -23,7 +23,7 @@ import poga.docs.clientmicroservice.repositories.IdeaRepository;
 import poga.docs.clientmicroservice.services.IdeaService;
 
 @RestController
-@RequestMapping("/idea")
+@RequestMapping("/ideas")
 public class IdeaController {
     private final IdeaService ideaService;
     private final IdeaRepository ideaRepository;
@@ -36,38 +36,44 @@ public class IdeaController {
         this.serviceMapper = serviceMapper;
     }
 
+    // i dont khow
     @GetMapping
     public ResponseEntity<List<Idea>> getAllIdea() {
         List<Idea> idea = ideaService.findAllIdea();
         return ResponseEntity.ok(idea);
     }
 
-    @GetMapping("/search/{ideaHeader}")
+    // 
+    @GetMapping("/{ideaHeader}")
     public ResponseEntity<?> getUsernameIdea(@PathVariable String ideaHeader) {
-        if (ideaHeader.isEmpty()) {
+        Idea ideas = ideaRepository.findByIdeaHeader(ideaHeader);
+        
+        if (ideas == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea Not Found");
         }
 
-        List<Idea> idea = ideaService.findByHeaderIdea(ideaHeader);
-        return ResponseEntity.ok(idea);
+        return ResponseEntity.ok(ideas);
     }
 
-    @GetMapping("/searchStarting/{ideaHeader}")
-    public ResponseEntity<?> getUsernameStartingWithIdea(@PathVariable String ideaHeader) {
+    //for search bar to find Idea by ideaHeader
+    @GetMapping("/search/{ideaHeader}")
+    public ResponseEntity<?> getUsernameStartingWithClients(@PathVariable String ideaHeader) {
         if (ideaHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ideaHeader Not Found");
         }
 
-        List<Idea> idea = ideaService.findIdeaByHeaderIdeaStartingWith(ideaHeader);
-        return ResponseEntity.ok(idea);
+        List<Idea> Ideas = ideaService.findByHeaderIdeaStartingWith(ideaHeader);
+        return ResponseEntity.ok(Ideas);
     }
 
+    //Create idea can be repeated idea
     @PostMapping
     public ResponseEntity<String> createIdea(@RequestBody Idea idea) {
         ideaRepository.save(idea);
         return ResponseEntity.ok("Idea created");
     }
 
+    //Update idea by handle
     @PutMapping("/{idea_id}")
     public ResponseEntity<String> updateIdea(@PathVariable Long idea_id, @RequestBody Idea idea) {
         if (!ideaRepository.existsById(idea_id)) {
@@ -75,6 +81,20 @@ public class IdeaController {
         }
         
         idea.setIdea_id(idea_id); // Ensure the idea_id is set
+        ideaRepository.save(idea);
+        return ResponseEntity.ok("Idea updated");
+    }
+
+    //Update idea by specific parameter
+    @PatchMapping("/{idea_id}")
+    public ResponseEntity<String> partialUpdateIdea(@PathVariable Long idea_id, @RequestBody IdeaDTO ideaDTO) {
+        Optional<Idea> optIdea = ideaRepository.findById(idea_id);
+        if (!optIdea.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea not found");
+        }
+
+        Idea idea = optIdea.get();
+        serviceMapper.updateIdeaFromDto(ideaDTO, idea);
         ideaRepository.save(idea);
         return ResponseEntity.ok("Idea updated");
     }
@@ -89,16 +109,5 @@ public class IdeaController {
         return ResponseEntity.ok("Idea deleted");
     }
 
-    @PatchMapping("/{idea_id}")
-    public ResponseEntity<String> partialUpdateIdea(@PathVariable Long idea_id, @RequestBody IdeaDTO ideaDTO) {
-        Optional<Idea> optIdea = ideaRepository.findById(idea_id);
-        if (!optIdea.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea not found");
-        }
-
-        Idea idea = optIdea.get();
-        serviceMapper.updateIdeaFromDto(ideaDTO, idea);
-        ideaRepository.save(idea);
-        return ResponseEntity.ok("Idea updated");
-    }
+    
 }

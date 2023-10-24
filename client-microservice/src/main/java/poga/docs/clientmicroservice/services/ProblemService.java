@@ -25,8 +25,8 @@ public class ProblemService {
         return this.problemRepository.findAll();
     }
 
-    public List<Problem> findByTopicProblem(String topic) {
-        return this.problemRepository.findByTopic(topic);
+    public List<Problem> findByCategoryProblem(String category) {
+        return this.problemRepository.findByCategory(category);
     }
 
     public List<Problem> findByTopicProblemStartingWith(String prefix) {

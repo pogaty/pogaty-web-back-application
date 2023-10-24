@@ -13,11 +13,11 @@ public class ProblemDTO {
     @JsonProperty("topic")
     private String topic;
 
-    @JsonProperty("category")
-    private String category;
-
     @JsonProperty("description")
     private String description;
+
+    @JsonProperty("category")
+    private String category;
 
     @JsonProperty("rating")
     private Long rating;

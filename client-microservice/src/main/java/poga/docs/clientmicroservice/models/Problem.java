@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -48,6 +49,11 @@ public class Problem {
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
+    @PrePersist
+    public void prePersist() {
+        date = LocalDateTime.now();
+    }
+
     Problem(){
         this.date = LocalDateTime.now();
      }
@@ -58,10 +64,12 @@ public class Problem {
         this.topic = topic;
         this.category = category;
         this.description = description;
+        this.category = category;
         this.rating = rating;
         this.ideaVisible = false;
         this.client = client;
     }
+
 
     public Long getProblem_id() {
         return id;

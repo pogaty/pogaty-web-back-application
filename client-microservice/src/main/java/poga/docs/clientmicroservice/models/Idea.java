@@ -30,16 +30,13 @@ public class Idea {
     @JsonProperty("board")
     private String board;
 
-    @JsonProperty("category")
-    private String category;
-
     @JsonProperty("agreement")
     private int agreement;
 
     
 
     // Releationship to entity M-->N
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "idea_participants",
                 joinColumns = @JoinColumn(name="idea_id",referencedColumnName = "idea_id"),
                 inverseJoinColumns = @JoinColumn(name="participant_id" , referencedColumnName = "participant_id"))
@@ -49,12 +46,11 @@ public class Idea {
         
     }
 
-    public Idea(Long idea_id, String ideaHeader, String board, String category, int agreement,
+    public Idea(Long idea_id, String ideaHeader, String board, int agreement,
             List<Participant> participants) {
         this.idea_id = idea_id;
         this.ideaHeader = ideaHeader;
         this.board = board;
-        this.category = category;
         this.agreement = agreement;
         this.participant = participants;
     }
@@ -81,14 +77,6 @@ public class Idea {
 
     public void setBoard(String board) {
         this.board = board;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public int getAgreement() {
