@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClientDTO {
     @JsonProperty("client_id")
-    private Long client_id;
+    private Long id;
 
     @JsonProperty("username")
     private String username;
@@ -37,11 +37,11 @@ public class ClientDTO {
     private Long rating;
 
     public Long getClient_id() {
-        return client_id;
+        return id;
     }
 
-    public void setClient_id(Long client_id) {
-        this.client_id = client_id;
+    public void setClient_id(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
