@@ -1,6 +1,7 @@
 package poga.docs.clientmicroservice.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,9 @@ public class ClientService {
 
     public List<Client> findByUsernameStartingWithClients(String prefix){
         return this.clientRepository.findByUsernameStartingWith(prefix);
+    }
+
+    public Optional<Client> findByClientId(Long id) {
+        return this.clientRepository.findById(id);
     }
 }
