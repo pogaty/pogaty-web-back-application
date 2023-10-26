@@ -3,7 +3,7 @@ package poga.docs.clientmicroservice.models;
 
 public class ParticipantDTO {
 
-    private Long participant_id;
+    private Long id;
 
     private String role;
 
@@ -15,19 +15,19 @@ public class ParticipantDTO {
         // Default constructor
     }
 
-    public ParticipantDTO(Long participant_id, String role, Long clientId) {
-        this.participant_id = participant_id;
+    public ParticipantDTO(Long id, String role, Long clientId) {
+        this.id = id;
         this.role = role;
         this.clientId = clientId;
     }
 
     // Getters and Setters
     public Long getParticipant_Id() {
-        return participant_id;
+        return id;
     }
 
-    public void setParticipant_Id(Long participant_id) {
-        this.participant_id = participant_id;
+    public void setParticipant_Id(Long id) {
+        this.id = id;
     }
 
     public String getRole() {

@@ -1,7 +1,6 @@
 package poga.docs.clientmicroservice.models;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,31 +17,30 @@ public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("participant_id")
-    @Column(name = "participant_id")
-    private Long participant_id;
+    private Long id;
 
     @JsonProperty("role")
     private String role;
 
     // Releationship to entity 1-->1
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    Participant(){}
+    public Participant(){}
 
-    public Participant(Long participant_id, String role, Client client) {
-        this.participant_id = participant_id;
+    public Participant(Long id, String role, Client client) {
+        this.id = id;
         this.role = role;
         this.client = client;
     }
 
     public Long getParticipant_id() {
-        return participant_id;
+        return id;
     }
 
-    public void setParticipant_id(Long participant_id) {
-        this.participant_id = participant_id;
+    public void setParticipant_id(Long id) {
+        this.id = id;
     }
 
     public String getRole() {
@@ -61,5 +59,4 @@ public class Participant {
         this.client = client;
     }
 
-    
 }
