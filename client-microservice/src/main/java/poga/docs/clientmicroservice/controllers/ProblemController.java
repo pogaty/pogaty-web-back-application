@@ -17,26 +17,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poga.docs.clientmicroservice.ServiceMapper;
+import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
+import poga.docs.clientmicroservice.services.ClientService;
 import poga.docs.clientmicroservice.services.ProblemService;
 
 @RestController
 @RequestMapping("/problems")
 public class ProblemController {
     private final ProblemService problemService;
+    private final ClientService clientService;
+
     private final ProblemRepository problemRepository;
+
     private final ServiceMapper serviceMapper;
 
     
     @Autowired
-    public ProblemController(ProblemService problemService, ProblemRepository problemRepository,
-            ServiceMapper serviceMapper) {
+    public ProblemController(ProblemService problemService, ClientService clientService, 
+        ProblemRepository problemRepository,ServiceMapper serviceMapper) {
         this.problemService = problemService;
         this.problemRepository = problemRepository;
         this.serviceMapper = serviceMapper;
+        this.clientService = clientService;
     }
 
     //for get all list of Problem
@@ -125,15 +131,24 @@ public class ProblemController {
         return ResponseEntity.ok("Problem updated");
     }
 
-    @PutMapping("/idea/{problem_id}") 
-    public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @RequestBody Idea idea) {
+    @PutMapping("/idea/{problem_id}/by/{client_id}") 
+    public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id, @RequestBody Idea idea) {
         Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
 
         if (!problemOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
         }
 
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
+        }
+
         Problem problem = problemOpt.get();
+        Client client = clientOpt.get();
+
+        idea.setCreator(client);
         problem.getIdeas().add(idea);
         problemRepository.save(problem);
         return ResponseEntity.ok("new idea has created");
