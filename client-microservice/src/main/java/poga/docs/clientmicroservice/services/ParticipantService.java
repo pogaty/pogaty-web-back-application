@@ -1,6 +1,7 @@
 package poga.docs.clientmicroservice.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,9 @@ public class ParticipantService {
 
     public List<Participant> findByRolePaticipantStartingWith(String prefix) {
         return this.participantRepository.findByRoleStartingWith(prefix);
+    }
+
+    public Optional<Participant> findByParticipantId(Long id) {
+        return this.participantRepository.findById(id);
     }
 }
