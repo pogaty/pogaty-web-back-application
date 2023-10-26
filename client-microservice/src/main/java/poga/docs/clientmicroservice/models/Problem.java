@@ -1,16 +1,16 @@
 package poga.docs.clientmicroservice.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,7 +22,6 @@ public class Problem {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("problem_id")
-    @Column(name = "problem_id")
     private Long id;
     
     @JsonProperty("topic")
@@ -46,17 +45,16 @@ public class Problem {
 
     // Releationship to entity 1-->N
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    @PrePersist
-    public void prePersist() {
-        date = LocalDateTime.now();
-    }
-
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idea_id", referencedColumnName = "id")
+    private List<Idea> ideas;
+    
     Problem(){
         this.date = LocalDateTime.now();
-     }
+    }
 
     public Problem(Long id, String topic, String category, String description, Long rating, Client client) {
         super();
@@ -135,4 +133,13 @@ public class Problem {
         this.ideaVisible = ideaVisible;
     }
 
+    public List<Idea> getIdeas() {
+        return ideas;
+    }
+
+    public void setIdeas(List<Idea> ideas) {
+        this.ideas = ideas;
+    }
+
+    
 }

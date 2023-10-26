@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProblemDTO {
 
     @JsonProperty("problem_id")
-    private Long problem_id;
+    private Long id;
     
     @JsonProperty("topic")
     private String topic;
@@ -25,15 +25,15 @@ public class ProblemDTO {
     @JsonProperty("idea_visible")
     private boolean ideaVisible;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd:MM:yyyy:HH:mm")
     private LocalDateTime date;
 
     public Long getProblem_id() {
-        return problem_id;
+        return id;
     }
 
-    public void setProblem_id(Long problem_id) {
-        this.problem_id = problem_id;
+    public void setProblem_id(Long id) {
+        this.id = id;
     }
 
     public String getTopic() {
