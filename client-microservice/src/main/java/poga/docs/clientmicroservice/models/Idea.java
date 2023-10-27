@@ -1,6 +1,7 @@
 package poga.docs.clientmicroservice.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,13 +44,8 @@ public class Idea {
     @JsonFormat(pattern = "dd:MM:yyyy:HH:mm")
     private LocalDateTime date;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Client creator;
-
-
     // Releationship to entity M-->N
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "idea_participants",
                 joinColumns = @JoinColumn(name="idea_id",referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name="participant_id" , referencedColumnName = "id"))
@@ -58,6 +53,7 @@ public class Idea {
 
     Idea(){
         this.date = LocalDateTime.now();
+        this.participants = new ArrayList<Participant>();
     }
 
     public Idea(Long id, String ideaHeader, String key, String board, int agreement, boolean publicState) {
@@ -124,14 +120,6 @@ public class Idea {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
-    }
-
-    public Client getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Client creator) {
-        this.creator = creator;
     }
 
     public boolean isPublicState() {

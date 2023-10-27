@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -109,6 +110,7 @@ public class Problem {
         this.date = date;
     }
 
+    @JsonIgnoreProperties({"problem", "password","firstname", "lastname", "gender", "phoneNumber", "mail", "address", "rating", "description"})
     public Client getClient() {
         return client;
     }
@@ -133,6 +135,7 @@ public class Problem {
         this.ideaVisible = ideaVisible;
     }
 
+    @JsonIgnoreProperties({"participants", "board"})
     public List<Idea> getIdeas() {
         return ideas;
     }

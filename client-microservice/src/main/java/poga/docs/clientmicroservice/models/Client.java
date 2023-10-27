@@ -1,5 +1,6 @@
 package poga.docs.clientmicroservice.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,10 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -52,17 +53,18 @@ public class Client {
     @JsonProperty("rating")
     private Long rating;
 
-    // Releationship to entity M-->N
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "Client_Problem",
-                joinColumns = @JoinColumn(name="client_id",referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name="problem_id" , referencedColumnName = "id"))
+    //Releationship to entity M-->N
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "problem_id", referencedColumnName = "id")
     private List<Problem> problem;
 
-    Client(){}
+    Client(){
+        this.problem = new ArrayList<>();
+    }
 
     public Client(Long id, String username, String password, String firstname, String lastname, String gender,
-            String phoneNumber, String mail, String address, String description, Long rating, List<Problem> problem) {
+            String phoneNumber, String mail, String address, String description, Long rating) {
+        super();
         this.id = id;
         this.username = username;
         this.password = password;
@@ -74,7 +76,6 @@ public class Client {
         this.address = address;
         this.description = description;
         this.rating = rating;
-        this.problem = problem;
     }
 
     public Long getClient_id() {
@@ -165,6 +166,7 @@ public class Client {
         this.rating = rating;
     }
 
+    @JsonIgnoreProperties({"client", "ideas", "idea_visible"})
     public List<Problem> getProblem() {
         return problem;
     }
