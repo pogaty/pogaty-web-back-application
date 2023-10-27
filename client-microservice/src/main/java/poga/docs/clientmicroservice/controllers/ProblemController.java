@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import poga.docs.clientmicroservice.ServiceMapper;
 import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.Idea;
+import poga.docs.clientmicroservice.models.Participant;
 import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
+import poga.docs.clientmicroservice.repositories.ClientRepository;
+import poga.docs.clientmicroservice.repositories.ParticipantRepository;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
 import poga.docs.clientmicroservice.services.ClientService;
 import poga.docs.clientmicroservice.services.ProblemService;
@@ -32,17 +35,22 @@ public class ProblemController {
     private final ClientService clientService;
 
     private final ProblemRepository problemRepository;
+    private final ParticipantRepository participantRepository;
+    private final ClientRepository clientRepository;
 
     private final ServiceMapper serviceMapper;
 
     
     @Autowired
     public ProblemController(ProblemService problemService, ClientService clientService, 
-        ProblemRepository problemRepository,ServiceMapper serviceMapper) {
+        ProblemRepository problemRepository,ServiceMapper serviceMapper,
+        ParticipantRepository participantRepository, ClientRepository clientRepository) {
         this.problemService = problemService;
         this.problemRepository = problemRepository;
         this.serviceMapper = serviceMapper;
         this.clientService = clientService;
+        this.participantRepository = participantRepository;
+        this.clientRepository = clientRepository;
     }
 
     //for get all list of Problem
@@ -113,9 +121,23 @@ public class ProblemController {
     }
 
     //Create problem can be repeated problem
-    @PostMapping()
-    public ResponseEntity<String> createProblem(@RequestBody Problem problem) {
+    @PostMapping("/by/{client_id}")
+    public ResponseEntity<String> createProblem(@PathVariable Long client_id, @RequestBody Problem problem) {
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found.");
+        }
+        Client client = clientOpt.get();
+
+        // save problem on repo.
+        problem.setClient(client);
         problemRepository.save(problem);
+
+        // update client problem.
+        client.getProblem().add(problem);
+        clientRepository.save(client);
+
         return ResponseEntity.ok("Problem created");
     }
 
@@ -134,21 +156,30 @@ public class ProblemController {
     @PutMapping("/idea/{problem_id}/by/{client_id}") 
     public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id, @RequestBody Idea idea) {
         Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
 
+        // find does problem exist.
         if (!problemOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
         }
+        Problem problem = problemOpt.get();
 
-        Optional<Client> clientOpt = clientService.findByClientId(client_id);
-
+        // find does client exist.
         if (!clientOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
         }
-
-        Problem problem = problemOpt.get();
         Client client = clientOpt.get();
 
-        idea.setCreator(client);
+        // create new participant for this idea.
+        Participant participant = new Participant();
+        participant.setClient(client);
+        participant.setRole("creator");
+        participantRepository.save(participant);
+
+        // set idea creator data.
+        idea.getParticipants().add(participant);
+
+        // save the problem idea.
         problem.getIdeas().add(idea);
         problemRepository.save(problem);
         return ResponseEntity.ok("new idea has created");
