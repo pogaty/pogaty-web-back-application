@@ -1,6 +1,7 @@
 package poga.docs.clientmicroservice.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,9 @@ public class IdeaService {
 
     public List<Idea> findByHeaderIdeaStartingWith(String prefix) {
         return this.ideaRepository.findByIdeaHeaderStartingWith(prefix);
+    }
+
+    public Optional<Idea> findByIdeaId(Long id) {
+        return this.ideaRepository.findById(id);
     }
 }
