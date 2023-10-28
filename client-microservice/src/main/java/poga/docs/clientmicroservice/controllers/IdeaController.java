@@ -17,23 +17,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poga.docs.clientmicroservice.ServiceMapper;
+import poga.docs.clientmicroservice.models.Agreement;
+import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.IdeaDTO;
+import poga.docs.clientmicroservice.repositories.AgreementRepository;
 import poga.docs.clientmicroservice.repositories.IdeaRepository;
+import poga.docs.clientmicroservice.services.AgreementService;
+import poga.docs.clientmicroservice.services.ClientService;
 import poga.docs.clientmicroservice.services.IdeaService;
 
 @RestController
 @RequestMapping("/ideas")
 public class IdeaController {
     private final IdeaService ideaService;
+    private final ClientService clientService;
+    private final AgreementService agreementService;
+
     private final IdeaRepository ideaRepository;
+    private final AgreementRepository agreementRepository;
+
     private final ServiceMapper serviceMapper;
 
     @Autowired
-    IdeaController(IdeaService ideaService, IdeaRepository ideaRepository,ServiceMapper serviceMapper) {
+    IdeaController(IdeaService ideaService, IdeaRepository ideaRepository,ServiceMapper serviceMapper,
+    ClientService clientService, AgreementRepository agreementRepository, AgreementService agreementService) {
         this.ideaService = ideaService;
         this.ideaRepository = ideaRepository;
         this.serviceMapper = serviceMapper;
+        this.clientService = clientService;
+        this.agreementRepository = agreementRepository;
+        this.agreementService = agreementService;
     }
 
     // i dont khow
@@ -84,6 +98,38 @@ public class IdeaController {
         ideaRepository.save(idea);
         return ResponseEntity.ok("Idea updated");
     }
+
+    @PutMapping("/{idea_id}/reaction_by/{client_id}")
+    public ResponseEntity<String> updateReactionByClientOnEachIdea(
+        @PathVariable Long idea_id, @PathVariable Long client_id, @RequestBody Agreement agreement) {
+            Optional<Client> clientOpt = clientService.findByClientId(client_id);
+            Optional<Idea> ideaOpt = ideaService.findByIdeaId(idea_id);
+
+            // does client exist.
+            if (!clientOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found.");
+            }
+            Client client = clientOpt.get();
+
+            // does idea exist.
+            if (!ideaOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea not found.");
+            }
+            Idea idea = ideaOpt.get();
+
+            Agreement agreed = new Agreement();
+            Optional<Agreement> agreementOpt = agreementService.findByReactionFactor(client_id, idea_id);
+            if (!agreementOpt.isPresent()) {
+                agreed.setClient(client);
+            } else {
+                agreed = agreementOpt.get();
+            }
+
+            agreed.setAgreed(agreement.isAgreed());
+            idea.getAgreements().add(agreed);
+            agreementRepository.save(agreed);
+            return ResponseEntity.ok("reaction updated.");
+        }
 
     //Update idea by specific parameter
     @PatchMapping("/{idea_id}")
