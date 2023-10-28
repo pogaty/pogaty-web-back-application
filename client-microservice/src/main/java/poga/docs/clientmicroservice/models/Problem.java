@@ -44,13 +44,12 @@ public class Problem {
     @JsonFormat(pattern = "dd:MM:yyyy:HH:mm")
     private LocalDateTime date;
 
-    // Releationship to entity 1-->N
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
     @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "idea_id", referencedColumnName = "id")
+    @JoinColumn(name = "problem_id", referencedColumnName = "id")
     private List<Idea> ideas;
     
     Problem(){
@@ -135,7 +134,7 @@ public class Problem {
         this.ideaVisible = ideaVisible;
     }
 
-    @JsonIgnoreProperties({"participants", "board"})
+    @JsonIgnoreProperties({"board"})
     public List<Idea> getIdeas() {
         return ideas;
     }
