@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,30 +13,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Idea")
+@JsonIgnoreProperties("ideaReactions")
 public class Idea {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("idea_id")
     private Long id;
 
     @JsonProperty("ideaHeader")
     private String ideaHeader;
 
+    @Column(length = 1500)
     @JsonProperty("key")
     private String key;
 
     @JsonProperty("board")
     private String board;
-
-    @JsonProperty("agreement")
-    private int agreement;
 
     @JsonProperty("publicState")
     private boolean publicState;
@@ -51,18 +53,21 @@ public class Idea {
                 inverseJoinColumns = @JoinColumn(name="participant_id" , referencedColumnName = "id"))
     private List<Participant> participants;
 
+    @OneToMany(cascade =CascadeType.MERGE)
+    @JoinColumn(name = "idea_id", referencedColumnName = "id")
+    private List<Agreement> agreements;
+
     Idea(){
         this.date = LocalDateTime.now();
         this.participants = new ArrayList<Participant>();
     }
 
-    public Idea(Long id, String ideaHeader, String key, String board, int agreement, boolean publicState) {
+    public Idea(Long id, String ideaHeader, String key, String board, boolean publicState) {
         super();
         this.id = id;
         this.ideaHeader = ideaHeader;
         this.key = key;
         this.board = board;
-        this.agreement = agreement;
         this.publicState = publicState;
     }
 
@@ -88,14 +93,6 @@ public class Idea {
 
     public void setBoard(String board) {
         this.board = board;
-    }
-
-    public int getAgreement() {
-        return agreement;
-    }
-
-    public void setAgreement(int agreement) {
-        this.agreement = agreement;
     }
 
     public List<Participant> getParticipants() {
@@ -128,5 +125,18 @@ public class Idea {
 
     public void setPublicState(boolean publicState) {
         this.publicState = publicState;
+    }
+
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
+    }
+
+    @JsonIgnoreProperties("idea")
+    public List<Agreement> getAgreements() {
+        return agreements;
+    }
+
+    public void setAgreements(List<Agreement> agreements) {
+        this.agreements = agreements;
     }
 }

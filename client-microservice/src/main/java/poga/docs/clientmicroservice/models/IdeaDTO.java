@@ -18,9 +18,6 @@ public class IdeaDTO {
     @JsonProperty("board")
     private String board;
 
-    @JsonProperty("agreement")
-    private int agreement;
-
     @JsonProperty("publicState")
     private boolean publicState;
 
@@ -49,14 +46,6 @@ public class IdeaDTO {
 
     public void setBoard(String board) {
         this.board = board;
-    }
-
-    public int getAgreement() {
-        return agreement;
-    }
-
-    public void setAgreement(int agreement) {
-        this.agreement = agreement;
     }
 
     public String getKey() {
