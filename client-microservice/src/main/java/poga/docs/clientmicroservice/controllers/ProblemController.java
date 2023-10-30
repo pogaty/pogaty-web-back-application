@@ -89,10 +89,6 @@ public class ProblemController {
     @GetMapping("/category/{category}")
     public ResponseEntity<?> getProblemsByCategory(@PathVariable String category) {
         List<Problem> problems = problemService.findByCategory(category);
-
-        if (problems.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem in category not found.");
-        }
         return ResponseEntity.ok(problems);
     }
 
@@ -112,12 +108,72 @@ public class ProblemController {
         Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
 
         if (!problemOpt.isPresent()) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem topic doesn't found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem topic doesn't found.");
         }
 
         Problem problem = problemOpt.get();
         String time = problemService.getTimeAgo(problem.getDate());
         return ResponseEntity.ok(time);
+    }
+
+    @GetMapping("/mark_by/{client_id}")
+    public ResponseEntity<?> getProblemsByClientsMark(@PathVariable Long client_id) {
+        List<Problem> problems = problemRepository.findByMarksClientId(client_id);
+
+        if (problems.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found.");
+        }
+
+        return ResponseEntity.ok(problems);
+    }
+
+    @DeleteMapping("/{problem_id}/mark_by/{client_id}")
+    public ResponseEntity<?> deleteMarkofClientOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id) {
+        Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+
+        if (!problemOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found.");
+        }
+        Problem problem = problemOpt.get();
+
+        
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found.");
+        }
+        Client client = clientOpt.get();
+
+        // Remove the client from the marks list of the problem
+        boolean removed = problem.getMarks().remove(client);
+
+        if (removed) {
+            // Save the updated problem entity
+            problemRepository.save(problem);
+            return ResponseEntity.ok("Client's mark removed successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client was not marked on this problem.");
+        }
+    }
+
+    @PutMapping("/{problem_id}/mark_on/{client_id}")
+    public ResponseEntity<?> markProblemsForClient(@PathVariable Long problem_id, @PathVariable Long client_id) {
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+        Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+
+        if (!problemOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found.");
+        }
+        Problem problem = problemOpt.get();
+
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found.");
+        }
+        Client client = clientOpt.get();
+
+        problem.getMarks().add(client);
+        problemRepository.save(problem);
+
+        return ResponseEntity.ok("marked success.");
     }
 
     //Create problem can be repeated problem

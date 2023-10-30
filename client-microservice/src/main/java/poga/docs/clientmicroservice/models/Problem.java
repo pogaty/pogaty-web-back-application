@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Problem")
+@JsonIgnoreProperties("marks")
 public class Problem {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +54,12 @@ public class Problem {
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "problem_id", referencedColumnName = "id")
     private List<Idea> ideas;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "mark_problems",
+                joinColumns = @JoinColumn(name="problem_id",referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name="client_id" , referencedColumnName = "id"))
+    private List<Client> marks;
     
     Problem(){
         this.date = LocalDateTime.now();
@@ -141,6 +150,15 @@ public class Problem {
 
     public void setIdeas(List<Idea> ideas) {
         this.ideas = ideas;
+    }
+
+    @JsonIgnoreProperties({"problem", "password","firstname", "lastname", "gender", "phoneNumber", "mail", "address", "rating", "description"})
+    public List<Client> getMarks() {
+        return this.marks;
+    }
+
+    public void setMarks(List<Client> marks) {
+        this.marks = marks;
     }
 
     

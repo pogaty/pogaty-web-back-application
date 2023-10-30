@@ -41,6 +41,14 @@ public class ProblemService {
         return this.problemRepository.findById(id);
     }
 
+    public List<Problem> findByClientId(Long id) {
+        return this.problemRepository.findByMarksClientId(id);
+    }
+
+    public Optional<Problem> findByMarksFactor(Long client_id, Long problem_id) {
+        return this.problemRepository.findByMarksFactor(client_id, problem_id);
+    }
+
     public String getTimeAgo(LocalDateTime date) {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(date, now);
