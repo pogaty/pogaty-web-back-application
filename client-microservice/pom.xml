@@ -39,6 +39,15 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency> -->
+
+		<!-- Add Lombok Dependency -->
+		<dependency>
+    		<groupId>org.projectlombok</groupId>
+    		<artifactId>lombok</artifactId>
+    		<version>1.18.22</version> <!-- Use the latest version -->
+    		<scope>provided</scope>
+		</dependency>
+
 		
 		<!-- H2 database -->
 		<dependency>

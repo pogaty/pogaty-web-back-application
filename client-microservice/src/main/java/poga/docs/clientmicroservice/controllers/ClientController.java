@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import poga.docs.clientmicroservice.ServiceMapper;
 import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.ClientDTO;
 import poga.docs.clientmicroservice.repositories.ClientRepository;
 import poga.docs.clientmicroservice.services.ClientService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +66,13 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
+    @GetMapping("/image/{filename}")
+    public ResponseEntity<?> downloadImageFromFileImage(@PathVariable String fileName) throws IOException{
+        byte[] imageData=clientService.DownloadImageToFileSystem(fileName);
+
+        return ResponseEntity.status(HttpStatus.OK).body(imageData);
+    }
+
     //Create Client and chacek username isn't exsits
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody Client client) {
@@ -76,6 +87,12 @@ public class ClientController {
         clientRepository.save(client);
         return ResponseEntity.ok("Client created");
     }
+    }
+
+    @PostMapping("/image")
+    public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("image")MultipartFile file)throws IOException{
+        String uploadImage = clientService.UploadImageToFileSystem(file);
+        return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
     }
 
     //Update client by handle

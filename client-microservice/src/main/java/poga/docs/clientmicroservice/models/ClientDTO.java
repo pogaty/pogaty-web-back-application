@@ -36,6 +36,12 @@ public class ClientDTO {
     @JsonProperty("rating")
     private Long rating;
 
+    @JsonProperty("picture")
+    private String picture;
+
+    @JsonProperty("name_picture")
+    private String name_picture;
+
     public Long getClient_id() {
         return id;
     }
@@ -122,6 +128,22 @@ public class ClientDTO {
 
     public void setRating(Long rating) {
         this.rating = rating;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getName_picture() {
+        return name_picture;
+    }
+
+    public void setName_picture(String name_picture) {
+        this.name_picture = name_picture;
     }
 
     

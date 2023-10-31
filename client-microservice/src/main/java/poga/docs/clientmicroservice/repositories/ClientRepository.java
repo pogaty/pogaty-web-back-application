@@ -14,6 +14,7 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     public Client findByUsername(String username);
     public List<Client> findByUsernameStartingWith(String prefix);
     public Optional<Client> findById(Long id);
+    public Optional<Client> findByfileImage(String fileImage);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE LOWER(c.username) = LOWER(:username)")
     public boolean existsByLowercaseUsername(@Param("username") String username);
