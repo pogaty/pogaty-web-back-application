@@ -60,6 +60,10 @@ public class Problem {
                 joinColumns = @JoinColumn(name="problem_id",referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name="client_id" , referencedColumnName = "id"))
     private List<Client> marks;
+
+    @OneToMany(cascade =CascadeType.MERGE)
+    @JoinColumn(name = "problem_id", referencedColumnName = "id")
+    private List<Trend> trends;
     
     Problem(){
         this.date = LocalDateTime.now();
@@ -159,6 +163,15 @@ public class Problem {
 
     public void setMarks(List<Client> marks) {
         this.marks = marks;
+    }
+
+    @JsonIgnoreProperties("problem")
+    public List<Trend> getTrends() {
+        return trends;
+    }
+
+    public void setTrends(List<Trend> trends) {
+        this.trends = trends;
     }
 
     

@@ -1,5 +1,6 @@
 package poga.docs.clientmicroservice.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,21 +23,26 @@ import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.Participant;
 import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.models.ProblemDTO;
+import poga.docs.clientmicroservice.models.Trend;
 import poga.docs.clientmicroservice.repositories.ClientRepository;
 import poga.docs.clientmicroservice.repositories.ParticipantRepository;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
+import poga.docs.clientmicroservice.repositories.TrendRepository;
 import poga.docs.clientmicroservice.services.ClientService;
 import poga.docs.clientmicroservice.services.ProblemService;
+import poga.docs.clientmicroservice.services.TrendService;
 
 @RestController
 @RequestMapping("/problems")
 public class ProblemController {
     private final ProblemService problemService;
     private final ClientService clientService;
+    private final TrendService trendService;
 
     private final ProblemRepository problemRepository;
     private final ParticipantRepository participantRepository;
     private final ClientRepository clientRepository;
+    private final TrendRepository trendRepository;
 
     private final ServiceMapper serviceMapper;
 
@@ -44,13 +50,16 @@ public class ProblemController {
     @Autowired
     public ProblemController(ProblemService problemService, ClientService clientService, 
         ProblemRepository problemRepository,ServiceMapper serviceMapper,
-        ParticipantRepository participantRepository, ClientRepository clientRepository) {
+        ParticipantRepository participantRepository, ClientRepository clientRepository,
+        TrendService trendService, TrendRepository trendRepository) {
         this.problemService = problemService;
         this.problemRepository = problemRepository;
         this.serviceMapper = serviceMapper;
         this.clientService = clientService;
         this.participantRepository = participantRepository;
         this.clientRepository = clientRepository;
+        this.trendService = trendService;
+        this.trendRepository = trendRepository;
     }
 
     //for get all list of Problem
@@ -114,6 +123,23 @@ public class ProblemController {
         Problem problem = problemOpt.get();
         String time = problemService.getTimeAgo(problem.getDate());
         return ResponseEntity.ok(time);
+    }
+
+    @GetMapping("/timed")
+    public ResponseEntity<?> getTimeAgo() {
+        List<Problem> problems = problemService.findAllProblem();
+
+        if (problems.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem not found.");
+        }
+
+        HashMap<Long, String> eachTimed = new HashMap<Long, String>();
+        for (Problem problem : problems) {
+            String time = problemService.getTimeAgo(problem.getDate());
+            eachTimed.put(problem.getProblem_id(), time);
+        }
+
+        return ResponseEntity.ok(eachTimed);
     }
 
     @GetMapping("/mark_by/{client_id}")
@@ -219,6 +245,38 @@ public class ProblemController {
         problemRepository.save(problem);
         return ResponseEntity.ok("Problem updated");
     }
+
+    @PutMapping("/{problem_id}/reaction_by/{client_id}")
+    public ResponseEntity<String> updateReactionByClientOnEachProblem(
+        @PathVariable Long problem_id, @PathVariable Long client_id, @RequestBody Trend trend) {
+            Optional<Client> clientOpt = clientService.findByClientId(client_id);
+            Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+
+            // does client exist.
+            if (!clientOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found.");
+            }
+            Client client = clientOpt.get();
+
+            // does idea exist.
+            if (!problemOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found.");
+            }
+            Problem problem = problemOpt.get();
+
+            Trend newTrend = new Trend();
+            Optional<Trend> trendOpt = this.trendService.findByReactionFactor(client_id, problem_id);
+            if (!trendOpt.isPresent()) {
+                newTrend.setClient(client);
+            } else {
+                newTrend = trendOpt.get();
+            }
+
+            newTrend.setTrend(trend.isTrend());
+            problem.getTrends().add(newTrend);
+            trendRepository.save(newTrend);
+            return ResponseEntity.ok("reaction updated.");
+        }
 
     @PutMapping("/idea/{problem_id}/by/{client_id}") 
     public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id, @RequestBody Idea idea) {
