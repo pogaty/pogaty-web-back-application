@@ -45,6 +45,10 @@ public class ProblemService {
         return this.problemRepository.findByMarksClientId(id);
     }
 
+    public List<Problem> findByClientClientId(Long id) {
+        return this.problemRepository.findByClientClient_Id(id);
+    }
+
     public Optional<Problem> findByMarksFactor(Long client_id, Long problem_id) {
         return this.problemRepository.findByMarksFactor(client_id, problem_id);
     }

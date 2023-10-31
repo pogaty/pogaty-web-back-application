@@ -127,6 +127,17 @@ public class ProblemController {
         return ResponseEntity.ok(problems);
     }
 
+    @GetMapping("/by/{client_id}")
+    public ResponseEntity<?> getProblemsByClientId(@PathVariable Long client_id) {
+        List<Problem> problems = problemService.findByClientClientId(client_id);
+
+        if (problems.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found.");
+        }
+
+        return ResponseEntity.ok(problems);
+    }
+
     @DeleteMapping("/{problem_id}/mark_by/{client_id}")
     public ResponseEntity<?> deleteMarkofClientOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id) {
         Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
