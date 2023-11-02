@@ -1,5 +1,6 @@
 package poga.docs.clientmicroservice.models;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -64,7 +66,9 @@ public class Client {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private List<Problem> problem;
 
-    private String fileImage;
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private List<FileImage> fileImage;
 
     Client(){
         this.problem = new ArrayList<>();
@@ -170,13 +174,12 @@ public class Client {
         this.problem = problem;
     }
 
-    public String getFileImage() {
+    public List<FileImage> getFileImage() {
         return fileImage;
     }
 
-    public void setFileImage(String fileImage) {
+    public void setFileImages(List<FileImage> fileImage) {
         this.fileImage = fileImage;
-    }   
-    
+    }  
     
 }

@@ -66,12 +66,6 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
-    @GetMapping("/image/{filename}")
-    public ResponseEntity<?> downloadImageFromFileImage(@PathVariable String fileName) throws IOException{
-        byte[] imageData=clientService.DownloadImageToFileSystem(fileName);
-
-        return ResponseEntity.status(HttpStatus.OK).body(imageData);
-    }
 
     //Create Client and chacek username isn't exsits
     @PostMapping
@@ -87,12 +81,6 @@ public class ClientController {
         clientRepository.save(client);
         return ResponseEntity.ok("Client created");
     }
-    }
-
-    @PostMapping("/image")
-    public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("image")MultipartFile file)throws IOException{
-        String uploadImage = clientService.UploadImageToFileSystem(file);
-        return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
     }
 
     //Update client by handle

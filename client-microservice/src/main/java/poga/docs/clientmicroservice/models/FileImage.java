@@ -10,11 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "FileImage")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Data
 public class FileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +32,6 @@ public class FileImage {
 
     @JsonProperty("filepath")
     private String filepath;
+
+
 }
