@@ -29,9 +29,7 @@ public class Service {
     @JsonProperty("category")
     private String category;
 
-    @ManyToOne
-    @JoinColumn(name = "page_id",referencedColumnName = "page_id")
-    private Page page;
+    
 
 
     Service(){
@@ -39,12 +37,12 @@ public class Service {
     }
 
 
-    public Service(Long service_id, String name, String description, String category, Page page) {
+    public Service(Long service_id, String name, String description, String category) {
         this.service_id = service_id;
         this.name = name;
         this.description = description;
         this.category = category;
-        this.page = page;
+   
     }
 
 
@@ -88,15 +86,7 @@ public class Service {
     }
 
 
-    public Page getPage() {
-        return page;
-    }
-
-
-    public void setPage(Page page) {
-        this.page = page;
-    }
-
+    
     
 
     

@@ -1,5 +1,7 @@
 package poga.docs.partnermicroservice.models;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -31,22 +34,26 @@ public class Collaborator {
     @JsonProperty("name")
     private String name;
 
-    // Releationship to entity 1-->1
-    @OneToOne(cascade = CascadeType.MERGE, targetEntity = poga.docs.partnermicroservice.models.Page.class)
-    @JoinColumn(name = "page_id", referencedColumnName = "page_id")
-    private poga.docs.partnermicroservice.models.Page page;
+    // Releationship to entity 1-->M
+    @JsonProperty("Service")
+    @OneToMany(mappedBy="collaborator")
+    private List<Service> service;
 
     Collaborator(){
 
     }
 
-    public Collaborator(Long collab_id, String email, String password, String name, Page page) {
+    
+
+    public Collaborator(Long collab_id, String email, String password, String name, List<Service> service) {
         this.collab_id = collab_id;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.page = page;
+        this.service = service;
     }
+
+
 
     public Long getCollab_id() {
         return collab_id;
@@ -79,13 +86,13 @@ public class Collaborator {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Page getPage() {
-        return page;
+    
+    public List<Service> getService() {
+        return service;
     }
 
-    public void setPage(Page page) {
-        this.page = page;
+    public void setService(List<Service> service) {
+        this.service = service;
     }
 
     
