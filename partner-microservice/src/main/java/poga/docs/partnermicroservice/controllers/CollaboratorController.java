@@ -1,6 +1,8 @@
 package poga.docs.partnermicroservice.controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,8 @@ public class CollaboratorController {
     private final CollaboratorService collaboratorService;
     private final ServiceMapper serviceMapper;
 
+    private final String FOLDER_PATH = "C:\\Users\\CAMT\\Desktop\\deployment\\pogaty-web-back-application\\partner-microservice\\Asset-Image\\";
+
     @Autowired
     public CollaboratorController(CollaboratorRepository collaboratorRepository,
             CollaboratorService collaboratorService, ServiceMapper serviceMapper) {
@@ -47,20 +51,20 @@ public class CollaboratorController {
     }
 
     @GetMapping("/{collaborator_id}")
-    public ResponseEntity getAllColloabratorByCollaborator_id(@PathVariable long collaborator_id) {
+    public ResponseEntity<?> getAllColloabratorByCollaborator_id(@PathVariable long collaborator_id) {
         Optional<Collaborator> optCollaborator = collaboratorRepository.findById(collaborator_id);
-        
+
         // check if id exists in db
         if (!optCollaborator.isPresent()) {
             // return error message 404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Collaborator Not Found");
-        
+
         }
         Collaborator collaborators = optCollaborator.get();
         return ResponseEntity.ok(collaborators);
     }
 
-     @GetMapping("/search/{name}")
+    @GetMapping("/search/{name}")
     public ResponseEntity<?> getNameStartingWithColloabrator(@PathVariable String name) {
         if (name.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colloabrator Not Found");
@@ -72,7 +76,7 @@ public class CollaboratorController {
 
     @PutMapping("/{collaborator_id}/image")
     public ResponseEntity<String> updateCollaboratorImage(@PathVariable Long collaborator_id,
-            @RequestParam ("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file) {
         Optional<Collaborator> optionalCollab = collaboratorRepository.findById(collaborator_id);
 
         if (optionalCollab.isPresent()) {
@@ -85,7 +89,8 @@ public class CollaboratorController {
                 collaboratorRepository.save(collaborator);
                 return ResponseEntity.ok("Collaborator image updated");
             } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update Collaborator image");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Failed to update Collaborator image");
             }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Collaborator not found");
@@ -105,6 +110,35 @@ public class CollaboratorController {
         }
     }
 
+    @GetMapping("/{id}/image")
+    public ResponseEntity<?> downloadImageFromFileSystemById(@PathVariable Long id) {
+        try {
+            Optional<Collaborator> collabData = collaboratorRepository.findById(id);
+
+            if (collabData.isPresent()) {
+                String filePath = collabData.get().getFileImage();
+                File imageFile = new File(FOLDER_PATH + filePath);
+
+                if (imageFile.exists() && imageFile.isFile()) {
+                    byte[] imageData = Files.readAllBytes(imageFile.toPath());
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .contentType(MediaType.IMAGE_PNG) // Adjust based on the actual image type
+                            .body(imageData);
+                } else {
+                    // Handle when the file does not exist
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found for the given ID: " + id);
+                }
+            } else {
+                // Handle when no file data is found for the given ID
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No image found for the given ID: " + id);
+            }
+        } catch (IOException e) {
+            // Handle IO exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching image: " + e.getMessage());
+        }
+    }
+
     @PostMapping
     public ResponseEntity<String> createCollaborator(@RequestBody Collaborator collaborator) {
         collaboratorRepository.save(collaborator);
@@ -112,7 +146,8 @@ public class CollaboratorController {
     }
 
     @PatchMapping("/{collaborator_id}")
-    public ResponseEntity<String> partialUpdateCollaborator(@PathVariable Long collaborator_id, @RequestBody CollaboratorDTO collaboratorDTO) {
+    public ResponseEntity<String> partialUpdateCollaborator(@PathVariable Long collaborator_id,
+            @RequestBody CollaboratorDTO collaboratorDTO) {
         Optional<Collaborator> optCollaborator = collaboratorRepository.findById(collaborator_id);
         if (!optCollaborator.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colloabrator not found");

@@ -17,45 +17,45 @@ import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
 
 @Service
 public class CollaboratorService {
-    
+
     private final CollaboratorRepository collaboratorRepository;
 
     private final String FOLDER_PATH = "C:\\Users\\CAMT\\Desktop\\deployment\\pogaty-web-back-application\\partner-microservice\\Asset-Image\\";
-    
+
     @Autowired
-    CollaboratorService( CollaboratorRepository collaboratorRepository) {
+    CollaboratorService(CollaboratorRepository collaboratorRepository) {
         this.collaboratorRepository = collaboratorRepository;
     }
 
-    public List<Collaborator> findAllCollaborators(){
-        return this.collaboratorRepository.findAll(); 
+    public List<Collaborator> findAllCollaborators() {
+        return this.collaboratorRepository.findAll();
     }
 
-    public List<Collaborator> findByNameCollaboratorStartingWith(String prefix){
-        return this.collaboratorRepository.findByNameStartingWith(prefix); 
+    public List<Collaborator> findByNameCollaboratorStartingWith(String prefix) {
+        return this.collaboratorRepository.findByNameStartingWith(prefix);
     }
 
     public String uploadImageToFileSystem(MultipartFile file) throws IOException {
         // Define a maximum file size (3 MB in bytes)
         long maxFileSize = 3 * 1024 * 1024; // 3 MB in bytes
-    
+
         if (file.getSize() > maxFileSize) {
             // File size exceeds the limit
             throw new IOException("File size too large. Maximum allowed size is 3 MB.");
         }
-    
+
         String filePath = new Date().getTime() + "_" + file.getOriginalFilename();
         File destinationFile = new File(FOLDER_PATH + filePath);
-    
-        Collaborator fileData = collaboratorRepository.save(Collaborator.builder().fileImage(filePath).build());
-    
+
         try {
             file.transferTo(destinationFile); // Transfer the uploaded file to the destination file
-            return "File uploaded successfully: " + filePath;
+            return filePath;
         } catch (IOException e) {
             // Handle file transfer exceptions
             // You might want to delete the Client entry if the file transfer fails
-            collaboratorRepository.delete(fileData);
+            if (destinationFile.exists()) {
+                destinationFile.delete(); // Delete the file if transfer failed
+            }
             throw new IOException("Failed to save the file to the file system.", e);
         }
     }
@@ -65,7 +65,7 @@ public class CollaboratorService {
         if (fileData.isPresent()) {
             String filePath = fileData.get().getFileImage();
             File imageFile = new File(FOLDER_PATH + filePath);
-    
+
             if (imageFile.exists() && imageFile.isFile()) {
                 return Files.readAllBytes(imageFile.toPath());
             } else {

@@ -20,7 +20,7 @@ public class ServiceService {
         return this.serviceRepository.findAll();
     }
 
-    public List<poga.docs.partnermicroservice.models.Service> findByNameServiceStartingWith(String prefix){
+    public List<poga.docs.partnermicroservice.models.Service> findByNameServiceStartingWith(String prefix) {
         return this.serviceRepository.findByNameStartingWith(prefix);
     }
 }

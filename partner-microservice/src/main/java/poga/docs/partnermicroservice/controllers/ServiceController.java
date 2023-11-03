@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poga.docs.partnermicroservice.ServiceMapper;
-import poga.docs.partnermicroservice.models.PageDTO;
 import poga.docs.partnermicroservice.models.Service;
 import poga.docs.partnermicroservice.models.ServiceDTO;
 import poga.docs.partnermicroservice.repositories.ServiceRepository;
@@ -42,21 +41,21 @@ public class ServiceController {
         return ResponseEntity.ok(serviceRepository.findAll());
     }
 
-     @GetMapping("/{service_id}")
+    @GetMapping("/{service_id}")
     public ResponseEntity getAllServiceByservice_id(@PathVariable long service_id) {
         Optional<Service> optService = serviceRepository.findById(service_id);
-        
+
         // check if id exists in db
         if (!optService.isPresent()) {
             // return error message 404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service Not Found");
-        
+
         }
         Service services = optService.get();
         return ResponseEntity.ok(services);
     }
 
-     @GetMapping("/search/{name}")
+    @GetMapping("/search/{name}")
     public ResponseEntity<?> getNameStartingWithService(@PathVariable String name) {
         if (name.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service Not Found");
@@ -73,7 +72,8 @@ public class ServiceController {
     }
 
     @PatchMapping("/{service_id}")
-    public ResponseEntity<String> partialUpdateService(@PathVariable Long service_id, @RequestBody ServiceDTO serviceDTO) {
+    public ResponseEntity<String> partialUpdateService(@PathVariable Long service_id,
+            @RequestBody ServiceDTO serviceDTO) {
         Optional<Service> optPage = serviceRepository.findById(service_id);
         if (!optPage.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found");

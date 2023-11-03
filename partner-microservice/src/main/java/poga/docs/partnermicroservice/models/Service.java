@@ -1,5 +1,7 @@
 package poga.docs.partnermicroservice.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,8 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -32,71 +37,69 @@ public class Service {
     @JsonProperty("serviceType")
     private String serviceType;
 
-    
+    @ManyToOne
+    @JoinColumn(name = "collaborator_id")
+    @JsonIgnoreProperties("Service")
+    private Collaborator collaborator;
 
+    Service() {
 
-    Service(){
-        
     }
 
-
-    public Service(Long service_id, String name, String description, String category, String serviceType) {
-        this.service_id = service_id;
+    public Service(String name, String description, String category, String serviceType, Collaborator collaborator) {
         this.name = name;
         this.description = description;
         this.category = category;
         this.serviceType = serviceType;
+        this.collaborator = collaborator;
     }
-
 
     public Long getService_id() {
         return service_id;
     }
 
-
     public void setService_id(Long service_id) {
         this.service_id = service_id;
     }
-
 
     public String getName() {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getDescription() {
         return description;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public String getCategory() {
         return category;
     }
 
-
     public void setCategory(String category) {
         this.category = category;
     }
-
 
     public String getServiceType() {
         return serviceType;
     }
 
-
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
-    
+    public Collaborator getCollaborator() {
+        return collaborator;
+    }
+
+    public void setCollaborator(Collaborator collaborator) {
+        this.collaborator = collaborator;
+    }
+
 }

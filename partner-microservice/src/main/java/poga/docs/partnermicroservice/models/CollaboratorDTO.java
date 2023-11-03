@@ -1,14 +1,12 @@
 package poga.docs.partnermicroservice.models;
 
-import javax.persistence.Column;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CollaboratorDTO {
 
     @JsonProperty("collab_id")
     private Long collab_id;
-    
+
     @JsonProperty("email")
     private String email;
 
@@ -17,6 +15,8 @@ public class CollaboratorDTO {
 
     @JsonProperty("name")
     private String name;
+
+    private String fileImage;
 
     public Long getCollab_id() {
         return collab_id;
@@ -50,5 +50,12 @@ public class CollaboratorDTO {
         this.name = name;
     }
 
-    
+    public String getFileImage() {
+        return fileImage;
+    }
+
+    public void setFileImage(String fileImage) {
+        this.fileImage = fileImage;
+    }
+
 }
