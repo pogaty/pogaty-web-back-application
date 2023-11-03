@@ -29,6 +29,9 @@ public class Service {
     @JsonProperty("category")
     private String category;
 
+    @JsonProperty("serviceType")
+    private String serviceType;
+
     
 
 
@@ -37,12 +40,12 @@ public class Service {
     }
 
 
-    public Service(Long service_id, String name, String description, String category) {
+    public Service(Long service_id, String name, String description, String category, String serviceType) {
         this.service_id = service_id;
         this.name = name;
         this.description = description;
         this.category = category;
-   
+        this.serviceType = serviceType;
     }
 
 
@@ -86,8 +89,14 @@ public class Service {
     }
 
 
-    
-    
+    public String getServiceType() {
+        return serviceType;
+    }
+
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
 
     
 }

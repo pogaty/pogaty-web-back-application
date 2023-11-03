@@ -18,6 +18,9 @@ public class ServiceDTO {
     @JsonProperty("category")
     private String category;
 
+    @JsonProperty("serviceType")
+    private String serviceType;
+
     public Long getService_id() {
         return service_id;
     }
@@ -48,6 +51,14 @@ public class ServiceDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 
     
