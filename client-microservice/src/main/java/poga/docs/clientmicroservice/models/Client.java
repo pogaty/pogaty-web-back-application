@@ -66,9 +66,7 @@ public class Client {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private List<Problem> problem;
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private List<FileImage> fileImage;
+    private String fileImage;
 
     Client(){
         this.problem = new ArrayList<>();
@@ -174,12 +172,13 @@ public class Client {
         this.problem = problem;
     }
 
-    public List<FileImage> getFileImage() {
+    public String getFileImage() {
         return fileImage;
     }
 
-    public void setFileImages(List<FileImage> fileImage) {
+    public void setFileImage(String fileImage) {
         this.fileImage = fileImage;
-    }  
+    }
+ 
     
 }
