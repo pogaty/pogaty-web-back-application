@@ -22,7 +22,9 @@ import poga.docs.clientmicroservice.models.ClientDTO;
 import poga.docs.clientmicroservice.repositories.ClientRepository;
 import poga.docs.clientmicroservice.services.ClientService;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
     private final ServiceMapper serviceMapper;
+    private final String FOLDER_PATH = "C:\\Users\\CAMT\\Desktop\\deployment\\pogaty-web-back-application\\client-microservice\\Asset-image\\";
   
 
     @Autowired
@@ -92,6 +95,35 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found");
         }
     }
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<?> downloadImageFromFileSystemById(@PathVariable Long id) {
+    try {
+        Optional<Client> clientData = clientRepository.findById(id);
+        
+        if (clientData.isPresent()) {
+            String filePath = clientData.get().getFileImage();
+            File imageFile = new File(FOLDER_PATH + filePath);
+    
+            if (imageFile.exists() && imageFile.isFile()) {
+                byte[] imageData = Files.readAllBytes(imageFile.toPath());
+                return ResponseEntity.status(HttpStatus.OK)
+                        .contentType(MediaType.IMAGE_PNG) // Adjust based on the actual image type
+                        .body(imageData);
+            } else {
+                // Handle when the file does not exist
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found for the given ID: " + id);
+            }
+        } else {
+            // Handle when no file data is found for the given ID
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No image found for the given ID: " + id);
+        }
+    } catch (IOException e) {
+        // Handle IO exceptions
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching image: " + e.getMessage());
+    }
+}
+
 
     // for search bar to find Client by username
     @GetMapping("/search/{username}")

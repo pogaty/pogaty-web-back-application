@@ -54,17 +54,17 @@ public class ClientService {
         }
     
         String filePath = new Date().getTime() + "_" + file.getOriginalFilename();
-        File destinationFile = new File(FOLDER_PATH + filePath);
-    
-        Client fileData = clientRepository.save(Client.builder().fileImage(filePath).build());
+        File destinationFile = new File(FOLDER_PATH + File.separator + filePath);
     
         try {
             file.transferTo(destinationFile); // Transfer the uploaded file to the destination file
-            return "File uploaded successfully: " + filePath;
+            return filePath;
         } catch (IOException e) {
             // Handle file transfer exceptions
-            // You might want to delete the Client entry if the file transfer fails
-            clientRepository.delete(fileData);
+            // You might want to delete the file from the file system if the transfer fails
+            if (destinationFile.exists()) {
+                destinationFile.delete(); // Delete the file if transfer failed
+            }
             throw new IOException("Failed to save the file to the file system.", e);
         }
     }
