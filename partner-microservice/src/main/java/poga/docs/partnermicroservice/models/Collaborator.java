@@ -39,20 +39,21 @@ public class Collaborator {
     @OneToMany(mappedBy="collaborator")
     private List<Service> service;
 
+    private String fileImage;
+
     Collaborator(){
 
     }
 
-    
-
-    public Collaborator(Long collab_id, String email, String password, String name, List<Service> service) {
+    public Collaborator(Long collab_id, String email, String password, String name, List<Service> service,
+            String fileImage) {
         this.collab_id = collab_id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.service = service;
+        this.fileImage = fileImage;
     }
-
 
 
     public Long getCollab_id() {
@@ -93,6 +94,14 @@ public class Collaborator {
 
     public void setService(List<Service> service) {
         this.service = service;
+    }
+
+    public String getFileImage() {
+        return fileImage;
+    }
+
+    public void setFileImage(String fileImage) {
+        this.fileImage = fileImage;
     }
 
     
