@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.Participant;
 import poga.docs.clientmicroservice.repositories.ParticipantRepository;
 
@@ -33,5 +34,13 @@ public class ParticipantService {
 
     public Optional<Participant> findByParticipantId(Long id) {
         return this.participantRepository.findById(id);
+    }
+
+    public Optional<Participant> findByClientIdAndIdeaId(Long client_id, Long idea_id) {
+        return this.participantRepository.findByClientIdAndIdeaid(client_id, idea_id);
+    }
+
+    public List<Idea> findIdeasByClientId(String username) {
+        return this.participantRepository.findIdeaByClientId(username);
     }
 }

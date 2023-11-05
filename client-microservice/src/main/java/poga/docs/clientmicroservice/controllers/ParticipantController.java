@@ -8,32 +8,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import poga.docs.clientmicroservice.ServiceMapper;
+import poga.docs.clientmicroservice.models.Client;
+import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.Participant;
-import poga.docs.clientmicroservice.models.ParticipantDTO;
+import poga.docs.clientmicroservice.repositories.IdeaRepository;
 import poga.docs.clientmicroservice.repositories.ParticipantRepository;
+import poga.docs.clientmicroservice.services.ClientService;
+import poga.docs.clientmicroservice.services.IdeaService;
 import poga.docs.clientmicroservice.services.ParticipantService;
 
 @RestController
 @RequestMapping("/participants")
 public class ParticipantController {
     private final ParticipantService participantService;
+    private final IdeaService ideaService;
+    private final ClientService clientService;
+    
     private final ParticipantRepository participantRepository;
-    private final ServiceMapper clientMapper;
+    private final IdeaRepository ideaRepository;
 
     @Autowired
     public ParticipantController(ParticipantService participantService, ParticipantRepository participantRepository,
-    ServiceMapper clientMapper) {
+    ServiceMapper clientMapper, IdeaService ideaService, ClientService clientService, IdeaRepository ideaRepository) {
         this.participantService = participantService;
         this.participantRepository = participantRepository;
-        this.clientMapper = clientMapper;
+        this.ideaService = ideaService;
+        this.clientService =clientService;
+        this.ideaRepository = ideaRepository;
     }
 
     //get for all list participant
@@ -54,59 +61,95 @@ public class ParticipantController {
         return ResponseEntity.ok(participants);
     }
 
-    //for search bar search role 
-    @GetMapping("/search/{role}")
-    public ResponseEntity<?> getSearchRole(@PathVariable String role) {
-        if (role.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("role Not Found");
+    @GetMapping("/on_idea/{idea_id}/by/{client_id}")
+    public ResponseEntity<?> getByClientIdAndIdeaId(@PathVariable Long client_id, @PathVariable Long idea_id) {
+        Optional<Participant> participantOpt = participantService.findByClientIdAndIdeaId(client_id, idea_id);
+
+        if (!participantOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("it'seem this client not apart of participants.");
         }
 
-        List<Participant> participants = participantService.findByRolePaticipantStartingWith(role);
-        return ResponseEntity.ok(participants);
+        Participant participant = participantOpt.get();
+        return ResponseEntity.ok(participant);
+    }
+
+    @GetMapping("/idea_by/{client_username}")
+    public ResponseEntity<?> getIdeasByClientId(@PathVariable String client_username) {
+        List<Idea> ideas = participantService.findIdeasByClientId(client_username);
+
+        if (ideas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ideas of client not found.");
+        }
+
+        return ResponseEntity.ok(ideas);
     }
 
     //Create participant can be repeated participant
-    @PostMapping
-    public ResponseEntity<String> createParticipant(@RequestBody Participant participant) {
-        participantRepository.save(participant);
+    @PostMapping("/on_idea/{idea_id}/by/{client_id}")
+    public ResponseEntity<String> createParticipant(@PathVariable Long idea_id, @PathVariable Long client_id,
+    @RequestBody Participant participant) {
+        Optional<Idea> ideaOpt = ideaService.findByIdeaId(idea_id);
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+
+        if (!ideaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idea not found.");
+        }
+        Idea idea = ideaOpt.get();
+
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client not found.");
+        }
+        Client client = clientOpt.get();
+
+        Participant newParticipant;
+        Optional<Participant> participantOpt = participantService.findByClientIdAndIdeaId(client_id, idea_id);
+        if (!participantOpt.isPresent()) {
+            newParticipant = new Participant();
+            newParticipant.setClient(client);
+            newParticipant.getIdeas().add(idea);
+        } else {
+            newParticipant = participantOpt.get();
+            idea.getParticipants().remove(newParticipant);
+        }
+
+        // save participant.
+        newParticipant.setRole(participant.getRole());
+        participantRepository.save(newParticipant);
+
+        // save participant on idea.
+        idea.getParticipants().add(newParticipant);
+        ideaRepository.save(idea);
         return ResponseEntity.ok("Participant created");
     }
 
-    //Update participant by Participant
-    @PutMapping("/{participant_id}")
-    public ResponseEntity<String> updateParticipant(@PathVariable Long participant_id, @RequestBody Participant participant) {
-        if (!participantRepository.existsById(participant_id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
-        }
-        
-        participant.setParticipant_id(participant_id); // Ensure the participant_id is set
-        participantRepository.save(participant);
-        return ResponseEntity.ok("Participant updated");
-    }
+    @DeleteMapping("/on_idea/{idea_id}/by/{client_id}")
+    public ResponseEntity<String> deleteParticipant(@PathVariable Long idea_id,@PathVariable Long client_id) {
+        Optional<Idea> ideaOpt = ideaService.findByIdeaId(idea_id);
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
 
-    //Update participant by specific parameter
-    @PatchMapping("/{participant_id}")
-    public ResponseEntity<String> partialUpdateParticipant(@PathVariable Long participant_id, @RequestBody ParticipantDTO participantDTO) {
-        Optional<Participant> optParticipant = participantRepository.findById(participant_id);
-        if (!optParticipant.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
+        if (!ideaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idea not found.");
+        }
+        Idea idea = ideaOpt.get();
+
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client not found.");
         }
 
-        Participant participant = optParticipant.get();
-        clientMapper.updateParticipatFromDto(participantDTO, participant);
-        participantRepository.save(participant);
-        return ResponseEntity.ok("Participant updated");
-    }
+        Optional<Participant> participantOpt = participantService.findByClientIdAndIdeaId(client_id, idea_id);
+        if (!participantOpt.isPresent()) { 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tparticipant not found.");
+        } else {
+            Participant participant = participantOpt.get();
 
-    
-    @DeleteMapping("/{participant_id}")
-    public ResponseEntity<String> deleteParticipant(@PathVariable Long participant_id) {
-        if (!participantRepository.existsById(participant_id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
+            // remove participant from idea repository.
+            idea.getParticipants().remove(participant);
+            ideaRepository.save(idea);
+
+            // remove participant from repository.
+            participantRepository.deleteById(participant.getParticipant_id());
+            return ResponseEntity.ok("remove participant successfully");
         }
-
-        participantRepository.deleteById(participant_id);
-        return ResponseEntity.ok("Participant deleted");
     }
 
     
