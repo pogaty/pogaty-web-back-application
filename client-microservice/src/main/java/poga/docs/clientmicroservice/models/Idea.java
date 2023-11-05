@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties("ideaReactions")
 public class Idea {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("idea_id")
     private Long id;
 
@@ -57,7 +57,7 @@ public class Idea {
     @JoinColumn(name = "idea_id", referencedColumnName = "id")
     private List<Agreement> agreements;
 
-    Idea(){
+    public Idea(){
         this.date = LocalDateTime.now();
         this.participants = new ArrayList<Participant>();
     }

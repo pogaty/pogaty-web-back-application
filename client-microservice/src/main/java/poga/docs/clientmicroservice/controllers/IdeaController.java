@@ -21,11 +21,16 @@ import poga.docs.clientmicroservice.models.Agreement;
 import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.models.Idea;
 import poga.docs.clientmicroservice.models.IdeaDTO;
+import poga.docs.clientmicroservice.models.Participant;
+import poga.docs.clientmicroservice.models.Problem;
 import poga.docs.clientmicroservice.repositories.AgreementRepository;
 import poga.docs.clientmicroservice.repositories.IdeaRepository;
+import poga.docs.clientmicroservice.repositories.ParticipantRepository;
+import poga.docs.clientmicroservice.repositories.ProblemRepository;
 import poga.docs.clientmicroservice.services.AgreementService;
 import poga.docs.clientmicroservice.services.ClientService;
 import poga.docs.clientmicroservice.services.IdeaService;
+import poga.docs.clientmicroservice.services.ProblemService;
 
 @RestController
 @RequestMapping("/ideas")
@@ -33,21 +38,28 @@ public class IdeaController {
     private final IdeaService ideaService;
     private final ClientService clientService;
     private final AgreementService agreementService;
+    private final ProblemService problemService;
 
     private final IdeaRepository ideaRepository;
     private final AgreementRepository agreementRepository;
+    private final ParticipantRepository participantRepository;
+    private final ProblemRepository problemRepository;
 
     private final ServiceMapper serviceMapper;
 
     @Autowired
     IdeaController(IdeaService ideaService, IdeaRepository ideaRepository,ServiceMapper serviceMapper,
-    ClientService clientService, AgreementRepository agreementRepository, AgreementService agreementService) {
+    ClientService clientService, AgreementRepository agreementRepository, AgreementService agreementService,
+    ProblemService problemService, ParticipantRepository participantRepository, ProblemRepository problemRepository) {
         this.ideaService = ideaService;
         this.ideaRepository = ideaRepository;
         this.serviceMapper = serviceMapper;
         this.clientService = clientService;
         this.agreementRepository = agreementRepository;
         this.agreementService = agreementService;
+        this.problemService =problemService;
+        this. problemRepository = problemRepository;
+        this. participantRepository = participantRepository;
     }
 
     // i dont khow
@@ -58,15 +70,16 @@ public class IdeaController {
     }
 
     // 
-    @GetMapping("/{ideaHeader}")
-    public ResponseEntity<?> getUsernameIdea(@PathVariable String ideaHeader) {
-        Idea ideas = ideaRepository.findByIdeaHeader(ideaHeader);
-        
-        if (ideas == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea Not Found");
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        Optional<Idea> ideaOpt = ideaRepository.findById(id);
 
-        return ResponseEntity.ok(ideas);
+        if (!ideaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("idea not found.");
+        }
+    
+        Idea idea =ideaOpt.get();
+        return ResponseEntity.ok(idea);
     }
 
     //for search bar to find Idea by ideaHeader
@@ -79,6 +92,53 @@ public class IdeaController {
         List<Idea> Ideas = ideaService.findByHeaderIdeaStartingWith(ideaHeader);
         return ResponseEntity.ok(Ideas);
     }
+
+    @GetMapping("participator/{idea_id}/except/{client_id}")
+    public ResponseEntity<?> getClientsParticipateOnIdea(@PathVariable Long idea_id, @PathVariable Long client_id) {
+        List<Client> clients = ideaService.findClientsParticipateOnIdea(idea_id, client_id);
+
+        if (clients.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client participate not found.");
+        }
+
+        return ResponseEntity.ok(clients);
+    }
+
+    //Create idea can be repeated idea
+    @PostMapping("/on_problem/{problem_id}/by/{client_id}")
+    public ResponseEntity<String> createIdeaOnProblem(@PathVariable Long problem_id, @PathVariable Long client_id, @RequestBody Idea idea) {
+        Optional<Problem> problemOpt = problemService.findByProblemId(problem_id);
+        Optional<Client> clientOpt = clientService.findByClientId(client_id);
+
+        // find does problem exist.
+        if (!problemOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
+        }
+        Problem problem = problemOpt.get();
+
+        // find does client exist.
+        if (!clientOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
+        }
+        Client client = clientOpt.get();
+
+        // create new participant for this idea.
+        Participant participant = new Participant();
+        participant.setClient(client);
+        participant.setRole("creator");
+        participantRepository.save(participant);
+        System.out.println("dasdas");
+
+        // set idea creator data.
+        idea.getParticipants().add(participant);
+        ideaRepository.save(idea);
+
+        // save the problem idea.
+        problem.getIdeas().add(idea);
+        problemRepository.save(problem);
+        return ResponseEntity.ok("new idea has created");
+    }
+
 
     //Create idea can be repeated idea
     @PostMapping
@@ -133,7 +193,7 @@ public class IdeaController {
 
     //Update idea by specific parameter
     @PatchMapping("/{idea_id}")
-    public ResponseEntity<String> partialUpdateIdea(@PathVariable Long idea_id, @RequestBody IdeaDTO ideaDTO) {
+    public ResponseEntity<?> partialUpdateIdea(@PathVariable Long idea_id, @RequestBody IdeaDTO ideaDTO) {
         Optional<Idea> optIdea = ideaRepository.findById(idea_id);
         if (!optIdea.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Idea not found");
@@ -142,7 +202,7 @@ public class IdeaController {
         Idea idea = optIdea.get();
         serviceMapper.updateIdeaFromDto(ideaDTO, idea);
         ideaRepository.save(idea);
-        return ResponseEntity.ok("Idea updated");
+        return ResponseEntity.ok(idea);
     }
 
     @DeleteMapping("/{idea_id}")
