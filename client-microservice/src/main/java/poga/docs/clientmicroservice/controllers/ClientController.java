@@ -41,6 +41,12 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
+    @GetMapping("/rand")
+    public ResponseEntity<List<Client>> getRandomClient() {
+        List<Client> clients = clientService.findRandClients();
+        return ResponseEntity.ok(clients);
+    }
+
     @GetMapping("/{username}")
     public ResponseEntity<?> getUsernameClients(@PathVariable String username) {
         Client clients = clientService.findByUserNameClients(username);
@@ -48,6 +54,16 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client Not Found");
         }
 
+        return ResponseEntity.ok(clients);
+    }
+
+    @GetMapping("/without/{client_id}/on_idea/{idea_id}")
+    public ResponseEntity<?> getWithoutSelf(@PathVariable Long client_id, @PathVariable Long idea_id) {
+        List<Client> clients = clientService.findWithoutParticipantAndSelf(idea_id, client_id);
+
+        if (clients.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client or idea not found.");
+        }
         return ResponseEntity.ok(clients);
     }
 

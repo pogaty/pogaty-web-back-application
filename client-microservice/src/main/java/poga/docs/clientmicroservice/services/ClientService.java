@@ -33,4 +33,14 @@ public class ClientService {
     public Optional<Client> findByClientId(Long id) {
         return this.clientRepository.findById(id);
     }
+
+    public List<Client> findRandClients() {
+        List<Client> clients = this.clientRepository.findRandomClients();
+        int limit = Math.min(5, clients.size());
+        return clients.subList(0, limit);
+    }
+
+    public List<Client> findWithoutParticipantAndSelf(Long idea_id, Long client_id) {
+        return this.clientRepository.findWithoutParticipantAndSelf(idea_id, client_id);
+    }
 }
