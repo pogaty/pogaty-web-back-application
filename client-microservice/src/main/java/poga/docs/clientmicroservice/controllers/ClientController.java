@@ -34,7 +34,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
     private final ServiceMapper serviceMapper;
-    private final String FOLDER_PATH = "C:\\Users\\CAMT\\Desktop\\deployment\\pogaty-web-back-application\\client-microservice\\Asset-image\\";
+    private final String FOLDER_PATH = "D:\\POGATY - Hackathon\\pogaty-web-back-application\\client-microservice\\Asset-image";
   
 
     @Autowired
@@ -182,6 +182,18 @@ public class ClientController {
         clientRepository.save(client);
         return ResponseEntity.ok("Client updated");
     }
+
+     //Update client by handle
+     @PutMapping("/{client_id}")
+     public ResponseEntity<String> updateClient(@PathVariable Long client_id, @RequestBody Client client) {
+         if (!clientRepository.existsById(client_id)) {
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
+         }
+         
+         client.setClient_id(client_id); // Ensure the client_id is set
+         clientRepository.save(client);
+         return ResponseEntity.ok("Client updated");
+     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable Long id) {
