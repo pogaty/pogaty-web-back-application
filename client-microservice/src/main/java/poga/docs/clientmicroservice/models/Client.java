@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,6 +48,7 @@ public class Client {
     @JsonProperty("address")
     private String address;
 
+    @Column(length = 1000)
     @JsonProperty("description")
     private String description;
 

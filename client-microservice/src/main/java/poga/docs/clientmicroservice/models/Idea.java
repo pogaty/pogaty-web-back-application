@@ -36,6 +36,7 @@ public class Idea {
     @JsonProperty("key")
     private String key;
 
+    @Column(length = 6000)
     @JsonProperty("board")
     private String board;
 
