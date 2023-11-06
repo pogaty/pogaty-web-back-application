@@ -78,7 +78,7 @@ public class ParticipantController {
         List<Idea> ideas = participantService.findIdeasByClientId(client_username);
 
         if (ideas.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ideas of client not found.");
+            return ResponseEntity.status(204).body("no ideas of client content.");
         }
 
         return ResponseEntity.ok(ideas);
