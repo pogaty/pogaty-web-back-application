@@ -34,7 +34,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
     private final ServiceMapper serviceMapper;
-    private final String FOLDER_PATH = "D:\\POGATY - Hackathon\\pogaty-web-back-application\\client-microservice\\Asset-image";
+    private final String FOLDER_PATH = System.getProperty( "user.dir" ).concat("\\client-microservice\\Asset-image\\");
   
 
     @Autowired
@@ -78,8 +78,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}/image")
-    public ResponseEntity<String> updateClientImage(@PathVariable Long id,
-            @RequestParam ("file") MultipartFile file) {
+    public ResponseEntity<String> updateClientImage(@PathVariable Long id,@RequestParam ("file") MultipartFile file) {
         Optional<Client> optionalClient = clientRepository.findById(id);
 
         if (optionalClient.isPresent()) {
