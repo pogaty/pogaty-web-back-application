@@ -16,8 +16,14 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+
 @Entity
 @Table(name = "client")
+@Builder
+@AllArgsConstructor
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,24 +65,10 @@ public class Client {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private List<Problem> problem;
 
+    private String fileImage;
+
     Client(){
         this.problem = new ArrayList<>();
-    }
-
-    public Client(Long id, String username, String password, String firstname, String lastname, String gender,
-            String phoneNumber, String mail, String address, String description, Long rating) {
-        super();
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.mail = mail;
-        this.address = address;
-        this.description = description;
-        this.rating = rating;
     }
 
     public Long getClient_id() {
@@ -175,5 +167,14 @@ public class Client {
     public void setProblem(List<Problem> problem) {
         this.problem = problem;
     }
+
+    public String getFileImage() {
+        return fileImage;
+    }
+
+    public void setFileImage(String fileImage) {
+        this.fileImage = fileImage;
+    }
+ 
     
 }

@@ -36,6 +36,8 @@ public class ClientDTO {
     @JsonProperty("rating")
     private Long rating;
 
+    
+
     public Long getClient_id() {
         return id;
     }
@@ -123,6 +125,12 @@ public class ClientDTO {
     public void setRating(Long rating) {
         this.rating = rating;
     }
+
+    
+
+    
+
+    
 
     
     
