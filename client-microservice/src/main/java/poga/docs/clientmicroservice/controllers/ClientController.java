@@ -62,7 +62,7 @@ public class ClientController {
         List<Client> clients = clientService.findWithoutParticipantAndSelf(idea_id, client_id);
 
         if (clients.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client or idea not found.");
+            return ResponseEntity.status(204).body("no content of client or idea.");
         }
         return ResponseEntity.ok(clients);
     }

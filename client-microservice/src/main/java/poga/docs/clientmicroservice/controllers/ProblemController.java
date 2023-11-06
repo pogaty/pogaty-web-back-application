@@ -130,7 +130,7 @@ public class ProblemController {
         List<Problem> problems = problemService.findAllProblem();
 
         if (problems.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("problem not found.");
+            return ResponseEntity.status(204).body("no content problems.");
         }
 
         HashMap<Long, String> eachTimed = new HashMap<Long, String>();

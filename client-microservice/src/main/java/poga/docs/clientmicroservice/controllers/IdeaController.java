@@ -98,7 +98,7 @@ public class IdeaController {
         List<Client> clients = ideaService.findClientsParticipateOnIdea(idea_id, client_id);
 
         if (clients.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("client participate not found.");
+            return ResponseEntity.status(204).body("no content of this client participate.");
         }
 
         return ResponseEntity.ok(clients);

@@ -47,7 +47,7 @@ public class AgreementController {
         List<Agreement> agreements = agreementService.findByIdeaIdAgree(idea_id);
 
         if (agreements.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("raction not found.");
+            return ResponseEntity.status(204).body("no reaction contents.");
         }
 
         return ResponseEntity.ok(agreements);
@@ -58,7 +58,7 @@ public class AgreementController {
         List<Agreement> agreements = agreementService.findByIdeaIdDisagree(idea_id);
 
         if (agreements.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("raction not found.");
+            return ResponseEntity.status(204).body("no reaction contents.");
         }
 
         return ResponseEntity.ok(agreements);
