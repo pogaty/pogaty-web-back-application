@@ -41,7 +41,7 @@ public class Collaborator {
 
     private String fileImage;
 
-    Collaborator() {
+    public Collaborator() {
 
     }
 
