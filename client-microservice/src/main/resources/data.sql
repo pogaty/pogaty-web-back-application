@@ -24,20 +24,20 @@ insert into client (id, username, password, firstname, lastname, gender, phone_n
 values (106, 'sample_john', 'john0006', 'John', 'Williams', 'male', '0718765432', 'sample_john.pogaty@gmail.com', '567 Pine Street, Hometown, NY', 'John is a talented graphic designer with a keen eye for aesthetics. His work spans branding, web design, and illustration, and he is known for his ability to bring creative visions to life. Outside of work, John is a music enthusiast and enjoys playing the guitar.', 'sample-6.png');
 
 -- Client 107
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (107, 'sample_emily', 'emily0007', 'Emily', 'Davis', 'female', '0912345678', 'sample_emily.pogaty@gmail.com', '789 Cedar Street, Riverside, FL', 'Emily is a skilled healthcare professional with a compassionate and caring nature. She has dedicated her career to improving the well-being of patients and is known for her outstanding patient care. In her free time, Emily enjoys yoga and volunteering at local health clinics.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (107, 'sample_emily', 'emily0007', 'Emily', 'Davis', 'female', '0912345678', 'sample_emily.pogaty@gmail.com', '789 Cedar Street, Riverside, FL', 'Emily is a skilled healthcare professional with a compassionate and caring nature. She has dedicated her career to improving the well-being of patients and is known for her outstanding patient care. In her free time, Emily enjoys yoga and volunteering at local health clinics.', 'sample-7.png');
 
 -- Client 108
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (108, 'sample_david', 'david0008', 'David', 'Martinez', 'male', '0712345678', 'sample_david.pogaty@gmail.com', '123 Maple Street, Sunnyville, AZ', 'David is a passionate environmentalist working to make the world a better place. He is actively involved in conservation efforts and sustainability projects. David enjoys outdoor activities like hiking and camping.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (108, 'sample_david', 'david0008', 'David', 'Martinez', 'male', '0712345678', 'sample_david.pogaty@gmail.com', '123 Maple Street, Sunnyville, AZ', 'David is a passionate environmentalist working to make the world a better place. He is actively involved in conservation efforts and sustainability projects. David enjoys outdoor activities like hiking and camping.', 'sample-8.png');
 
 -- Client 109
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (109, 'sample_sarah', 'sarah0009', 'Sarah', 'Garcia', 'female', '0812345678', 'sample_sarah.pogaty@gmail.com', '456 Birch Street, Lakeside, WA', 'Sarah is a successful entrepreneur with a knack for innovation. She has launched multiple startups and is known for her determination and leadership skills. In her free time, Sarah enjoys mentoring aspiring entrepreneurs and exploring new business opportunities.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (109, 'sample_sarah', 'sarah0009', 'Sarah', 'Garcia', 'female', '0812345678', 'sample_sarah.pogaty@gmail.com', '456 Birch Street, Lakeside, WA', 'Sarah is a successful entrepreneur with a knack for innovation. She has launched multiple startups and is known for her determination and leadership skills. In her free time, Sarah enjoys mentoring aspiring entrepreneurs and exploring new business opportunities.', 'sample-9.png');
 
 -- Client 110
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (110, 'sample_michael', 'michael0010', 'Michael', 'Harris', 'male', '0912345678', 'sample_michael.pogaty@gmail.com', '789 Redwood Street, Mountainville, CO', 'Michael is a dedicated firefighter who puts his life on the line to protect the community. His bravery and commitment to public safety are highly respected. In his off-duty hours, Michael enjoys spending time with his family and playing sports.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (110, 'sample_michael', 'michael0010', 'Michael', 'Harris', 'male', '0912345678', 'sample_michael.pogaty@gmail.com', '789 Redwood Street, Mountainville, CO', 'Michael is a dedicated firefighter who puts his life on the line to protect the community. His bravery and commitment to public safety are highly respected. In his off-duty hours, Michael enjoys spending time with his family and playing sports.', 'sample-10.png');
 
 
 
