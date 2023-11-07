@@ -162,7 +162,7 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         } else {
             // Save the client
-            client.setFileImage("sample-1.png");
+            client.setFileImage("sample-default.png");
             clientRepository.save(client);
             return ResponseEntity.ok("Client created");
         }
