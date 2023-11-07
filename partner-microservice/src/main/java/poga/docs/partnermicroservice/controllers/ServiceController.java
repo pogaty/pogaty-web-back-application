@@ -1,6 +1,5 @@
 package poga.docs.partnermicroservice.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ import poga.docs.partnermicroservice.services.ServiceService;
 @RequestMapping("/services")
 public class ServiceController {
     private final ServiceRepository serviceRepository;
-    private final ServiceService serviceService;
     private final CollaboratorService collaboratorService;
     private final CollaboratorRepository collaboratorRepository;
     private final ServiceMapper serviceMapper;
@@ -37,7 +35,6 @@ public class ServiceController {
     public ServiceController(ServiceRepository serviceRepository, ServiceService serviceService,
             ServiceMapper serviceMapper, CollaboratorService collaboratorService, CollaboratorRepository collaboratorRepository) {
         this.serviceRepository = serviceRepository;
-        this.serviceService = serviceService;
         this.serviceMapper = serviceMapper;
         this.collaboratorService = collaboratorService;
         this.collaboratorRepository =collaboratorRepository;
