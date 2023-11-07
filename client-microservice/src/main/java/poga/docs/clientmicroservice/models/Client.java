@@ -67,7 +67,7 @@ public class Client {
 
     private String fileImage;
 
-    Client(){
+    public Client(){
         this.problem = new ArrayList<>();
     }
 

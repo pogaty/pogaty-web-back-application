@@ -67,7 +67,7 @@ public class Problem {
     @JoinColumn(name = "problem_id", referencedColumnName = "id")
     private List<Trend> trends;
     
-    Problem(){
+    public Problem(){
         this.date = LocalDateTime.now();
     }
 
