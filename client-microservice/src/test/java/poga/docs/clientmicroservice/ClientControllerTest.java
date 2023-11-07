@@ -36,7 +36,6 @@ public class ClientControllerTest {
     private ClientController clientController;
 
     @Test
-    @Sql(scripts = "test-data.sql")
     public void testGetAllClients() {
         List<Client> clients = new ArrayList<>(); // Prepare some mock data
         when(clientService.findAllClients()).thenReturn(clients);
@@ -47,7 +46,6 @@ public class ClientControllerTest {
     }
 
     @Test
-    @Sql(scripts = "test-data.sql")
     public void testGetRandomClient() {
         List<Client> clients = new ArrayList<>(); // Prepare some mock data
         when(clientService.findRandClients()).thenReturn(clients);
