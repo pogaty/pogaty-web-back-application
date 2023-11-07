@@ -1,5 +1,6 @@
 package poga.docs.partnermicroservice.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import poga.docs.partnermicroservice.services.ServiceService;
 @RequestMapping("/services")
 public class ServiceController {
     private final ServiceRepository serviceRepository;
+    private final ServiceService serviceService;
     private final CollaboratorService collaboratorService;
     private final CollaboratorRepository collaboratorRepository;
     private final ServiceMapper serviceMapper;
@@ -38,6 +40,7 @@ public class ServiceController {
         this.serviceMapper = serviceMapper;
         this.collaboratorService = collaboratorService;
         this.collaboratorRepository =collaboratorRepository;
+        this.serviceService = serviceService;
     }
 
     @GetMapping()
@@ -56,6 +59,28 @@ public class ServiceController {
 
         }
         Services services = optService.get();
+        return ResponseEntity.ok(services);
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<?> getServicesByType(@PathVariable String type) {
+        List<Services> services = serviceService.findByServiceType(type);
+
+        if (services.isEmpty()) {
+            return ResponseEntity.status(204).body("no content services.");
+        }
+
+        return ResponseEntity.ok(services);
+    }
+
+    @GetMapping("/type/{type}/category/{category}")
+    public ResponseEntity<?> getServicesByTypeAndCategory(@PathVariable String type, @PathVariable String category) {
+        List<Services> services = serviceService.findByServiceTypeAndCategory(type, category);
+
+        if (services.isEmpty()) {
+            return ResponseEntity.status(204).body("no content services.");
+        }
+
         return ResponseEntity.ok(services);
     }
 
