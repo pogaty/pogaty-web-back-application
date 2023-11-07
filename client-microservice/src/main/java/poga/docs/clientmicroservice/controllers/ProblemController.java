@@ -330,6 +330,11 @@ public class ProblemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Problem not found");
         }
 
+        List<Trend> trends = problemService.findTrendsByProblemId(problem_id);
+        if (!trends.isEmpty()) {
+            trendRepository.deleteAll(trends);
+        }
+
         problemRepository.deleteById(problem_id);
         return ResponseEntity.ok("Problem deleted");
     }

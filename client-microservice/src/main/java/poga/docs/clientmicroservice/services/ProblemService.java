@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import poga.docs.clientmicroservice.models.Problem;
+import poga.docs.clientmicroservice.models.Trend;
 import poga.docs.clientmicroservice.repositories.ProblemRepository;
 
 @Service
@@ -53,6 +54,10 @@ public class ProblemService {
         return this.problemRepository.findByMarksFactor(client_id, problem_id);
     }
 
+    public List<Trend> findTrendsByProblemId(Long id) {
+        return this.problemRepository.findTrendByProblemId(id);
+    }
+    
     public String getTimeAgo(LocalDateTime date) {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(date, now);
