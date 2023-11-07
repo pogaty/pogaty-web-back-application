@@ -38,6 +38,12 @@ public class Services {
     @JsonIgnoreProperties("Service")
     private Collaborator collaborator;
 
+    @JsonProperty("minimumPaid")
+    private Double minimumPaid;
+
+    @JsonProperty("costScope")
+    private Double costScope;
+
     public Services() {
 
     }
@@ -98,5 +104,23 @@ public class Services {
     public void setCollaborator(Collaborator collaborator) {
         this.collaborator = collaborator;
     }
+
+    public Double getMinimumPaid() {
+        return minimumPaid;
+    }
+
+    public void setMinimumPaid(Double minimumPaid) {
+        this.minimumPaid = minimumPaid;
+    }
+
+    public Double getCostScope() {
+        return costScope;
+    }
+
+    public void setCostScope(Double costScope) {
+        this.costScope = costScope;
+    }
+
+    
 
 }
