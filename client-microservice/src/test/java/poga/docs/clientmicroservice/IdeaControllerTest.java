@@ -59,7 +59,6 @@ public class IdeaControllerTest {
     private IdeaController ideaController;
 
     @Test
-    @Sql("/clientmicroservice:data-test.sql")
     public void testGetAllIdea() {
         // Mock the data - Create a list of Idea objects
         List<Idea> ideaList = new ArrayList<>();
@@ -77,7 +76,6 @@ public class IdeaControllerTest {
     }
 
     @Test
-    @Sql("/clientmicroservice:data-test.sql")
     public void testGetById() {
         // Mock the idea ID you want to retrieve
         Long ideaId = 101L;
@@ -97,5 +95,4 @@ public class IdeaControllerTest {
         assertEquals(mockedIdea, response.getBody()); // Check if the returned idea matches the mocked idea
     }
 
-    // Write similar tests for other methods in the IdeaController
 }

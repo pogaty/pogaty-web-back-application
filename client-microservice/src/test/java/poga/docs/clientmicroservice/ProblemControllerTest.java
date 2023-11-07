@@ -201,8 +201,6 @@ class ProblemControllerTest {
         assertEquals("Problem updated", response.getBody());
     }
 
-    
-
     @Test
     void testGetTopicStartingWithByProblem() {
         // Mock input data
@@ -223,25 +221,25 @@ class ProblemControllerTest {
     @Test
     void testMarkProblemsForClient() {
         // Mock input data
-    Long problemId = 1L;
-    Long clientId = 1L;
+        Long problemId = 1L;
+        Long clientId = 1L;
 
-    // Create a Problem and initialize the marks list
-    Problem mockProblem = new Problem();
-    mockProblem.setMarks(new ArrayList<>()); // Initialize the marks list
+        // Create a Problem and initialize the marks list
+        Problem mockProblem = new Problem();
+        mockProblem.setMarks(new ArrayList<>()); // Initialize the marks list
 
-    // Create a Client
-    Client mockClient = new Client();
+        // Create a Client
+        Client mockClient = new Client();
 
-    // Mock behavior for finding problem and client
-    when(problemService.findByProblemId(problemId)).thenReturn(Optional.of(mockProblem));
-    when(clientService.findByClientId(clientId)).thenReturn(Optional.of(mockClient));
+        // Mock behavior for finding problem and client
+        when(problemService.findByProblemId(problemId)).thenReturn(Optional.of(mockProblem));
+        when(clientService.findByClientId(clientId)).thenReturn(Optional.of(mockClient));
 
-    // Execute the method under test
-    ResponseEntity<?> response = problemController.markProblemsForClient(problemId, clientId);
+        // Execute the method under test
+        ResponseEntity<?> response = problemController.markProblemsForClient(problemId, clientId);
 
-    // Assertions
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals("marked success.", response.getBody());
+        // Assertions
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("marked success.", response.getBody());
     }
 }

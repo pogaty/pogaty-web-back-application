@@ -17,17 +17,10 @@ import poga.docs.clientmicroservice.models.Client;
 import poga.docs.clientmicroservice.repositories.ClientRepository;
 import poga.docs.clientmicroservice.services.ClientService;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,9 +57,6 @@ public class ClientControllerTest {
         assertEquals(clients, response.getBody());
     }
 
-    // Test other methods similarly
-
-    // Example: Test the createClient method
     @Test
     public void testCreateClient() {
         Client client = new Client();
@@ -96,7 +86,6 @@ public class ClientControllerTest {
         assertEquals("Client updated", response.getBody());
     }
 
-    // Example: Test the deleteClient method
     @Test
     public void testDeleteClient() {
         Long clientId = 101L; // Assuming an existing client with this ID
@@ -108,7 +97,7 @@ public class ClientControllerTest {
         assertEquals("Client deleted", response.getBody());
     }
 
-    // Example: Test the getUsernameStartingWithClients method
+
     @Test
     public void testGetUsernameStartingWithClients() {
         String username = "testUser"; // Change to match a username for testing
@@ -120,46 +109,5 @@ public class ClientControllerTest {
         assertEquals(Collections.emptyList(), response.getBody());
     }
 
-    // //Test the updateClientImage method
-    // @Test
-    // public void testUpdateClientImage() throws IOException {
-    //     Long clientId = 101L; // Assuming an existing client with this ID
-    //     Path imagePath = Paths.get("client-microservice\\Asset-image\\sample-1.png");
-
-    //     // Simulating file upload
-    //     MockMultipartFile file = new MockMultipartFile("file", "sample-1.png", null, Files.readAllBytes(imagePath));
-
-    //     // Mocking repository and service behavior
-    //     ClientRepository clientRepository = mock(ClientRepository.class);
-    //     ClientService clientService = mock(ClientService.class);
-
-    //     Optional<Client> optionalClient = Optional.of(new Client()); // Create a client or use a mock client
-    //     when(clientRepository.findById(clientId)).thenReturn(optionalClient);
-    //     when(clientService.uploadImageToFileSystem(file)).thenReturn("image.png");
-
-    //     // Test the updateClientImage method
-    //     ResponseEntity<String> response = clientController.updateClientImage(clientId, file);
-
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals("Client image updated", response.getBody());
-    // }
-
-    // // Example: Test the downloadImageFromFileSystemById method
-    // @Test
-    // public void testDownloadImageFromFileSystemById() throws IOException {
-    //     Long clientId = 101L; // Assuming an existing client with this ID
-    //     File imageFile = new File("path_to_image.png"); // Adjust the path to a valid image file
-
-    //     Optional<Client> clientData = Optional.of(new Client()); // Create a client or use a mock client
-    //     clientData.get().setFileImage("image.png"); // Set the file image name
-
-    //     when(clientRepository.findById(clientId)).thenReturn(clientData);
-    //     when(Files.readAllBytes(imageFile.toPath())).thenReturn("client-microservice\\Asset-image\\".getBytes());
-
-    //     ResponseEntity<?> response = clientController.downloadImageFromFileSystemById(clientId);
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals(MediaType.IMAGE_PNG, response.getHeaders().getContentType());
-    //     // Assert other conditions based on your test scenario
-    // }
 
 }
