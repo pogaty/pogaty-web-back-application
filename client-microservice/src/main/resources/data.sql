@@ -1,27 +1,27 @@
 
 -- Client 101
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (101, 'sample_derek', 'derek0001', 'derek', 'smart', 'male', '0597144231', 'sample_derek.pogaty@gmail.com', '49996 Alexander Plaza, Port Arlenberg, IN 88649-5705', 'Derek is a dedicated physicist with an unassuming yet thoughtful demeanor. His sharp mind and relentless curiosity drive his groundbreaking research, and he known for his passion and willingness to share his discoveries with others. When not in the lab, Derek enjoys stargazing and reading classic science fiction, maintaining his insatiable fascination with the cosmos.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (101, 'sample_derek', 'derek0001', 'derek', 'smart', 'male', '0597144231', 'sample_derek.pogaty@gmail.com', '49996 Alexander Plaza, Port Arlenberg, IN 88649-5705', 'Derek is a dedicated physicist with an unassuming yet thoughtful demeanor. His sharp mind and relentless curiosity drive his groundbreaking research, and he known for his passion and willingness to share his discoveries with others. When not in the lab, Derek enjoys stargazing and reading classic science fiction, maintaining his insatiable fascination with the cosmos.', 'sample-1.png');
 
 -- Client 102
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (102, 'sample_raura', 'raura0002', 'raura', 'craft', 'female', '0814326675', 'sample_raura.pogaty@gmail.com', 'Apt. 128 7510 Trantow Terrace, Ezraberg, ME 95760', 'Raura is a renowned expert in artificial intelligence, celebrated for their innovative contributions to the field. Their confident and approachable demeanor complements their dedication to advancing AI technologies. Raura work spans a wide range of applications, from chatbots to autonomous vehicles, all while advocating for ethical AI development. In their free time, Raura enjoys building AI-powered robots, and they are at the forefront of shaping AI future impact on society.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (102, 'sample_raura', 'raura0002', 'raura', 'craft', 'female', '0814326675', 'sample_raura.pogaty@gmail.com', 'Apt. 128 7510 Trantow Terrace, Ezraberg, ME 95760', 'Raura is a renowned expert in artificial intelligence, celebrated for their innovative contributions to the field. Their confident and approachable demeanor complements their dedication to advancing AI technologies. Raura work spans a wide range of applications, from chatbots to autonomous vehicles, all while advocating for ethical AI development. In their free time, Raura enjoys building AI-powered robots, and they are at the forefront of shaping AI future impact on society.', 'sample-2.png');
 
 -- Client 103
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (103, 'sample_jane', 'jane0003', 'Jane', 'Smith', 'female', '0712345678', 'sample_jane.pogaty@gmail.com', '123 Main Street, Anytown, USA', 'Jane is a talented software engineer with a passion for creating user-friendly applications. Her attention to detail and problem-solving skills make her a valuable asset to any development team. In her spare time, Jane enjoys hiking and volunteering for local non-profit organizations.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image )
+values (103, 'sample_jane', 'jane0003', 'Jane', 'Smith', 'female', '0712345678', 'sample_jane.pogaty@gmail.com', '123 Main Street, Anytown, USA', 'Jane is a talented software engineer with a passion for creating user-friendly applications. Her attention to detail and problem-solving skills make her a valuable asset to any development team. In her spare time, Jane enjoys hiking and volunteering for local non-profit organizations.', 'sample-3.png');
 
 -- Client 104
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (104, 'sample_mike', 'mike0004', 'Mike', 'Johnson', 'male', '0919876543', 'sample_mike.pogaty@gmail.com', '789 Elm Street, Another City, CA', 'Mike is a marketing expert known for his creative and data-driven approach to campaigns. He has a deep understanding of consumer behavior and a track record of successful product launches. Outside of work, Mike is an avid photographer and enjoys traveling to capture unique moments.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (104, 'sample_mike', 'mike0004', 'Mike', 'Johnson', 'male', '0919876543', 'sample_mike.pogaty@gmail.com', '789 Elm Street, Another City, CA', 'Mike is a marketing expert known for his creative and data-driven approach to campaigns. He has a deep understanding of consumer behavior and a track record of successful product launches. Outside of work, Mike is an avid photographer and enjoys traveling to capture unique moments.', 'sample-4.png');
 
 -- Client 105
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (105, 'sample_lisa', 'lisa0005', 'Lisa', 'Brown', 'female', '0812345678', 'sample_lisa.pogaty@gmail.com', '456 Oak Avenue, Smallville, TX', 'Lisa is a dedicated teacher with a passion for inspiring young minds. Her enthusiasm for education and creative teaching methods have earned her the respect of both students and colleagues. In her free time, Lisa enjoys gardening and painting.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (105, 'sample_lisa', 'lisa0005', 'Lisa', 'Brown', 'female', '0812345678', 'sample_lisa.pogaty@gmail.com', '456 Oak Avenue, Smallville, TX', 'Lisa is a dedicated teacher with a passion for inspiring young minds. Her enthusiasm for education and creative teaching methods have earned her the respect of both students and colleagues. In her free time, Lisa enjoys gardening and painting.', 'sample-5.png');
 
 -- Client 106
-insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
-values (106, 'sample_john', 'john0006', 'John', 'Williams', 'male', '0718765432', 'sample_john.pogaty@gmail.com', '567 Pine Street, Hometown, NY', 'John is a talented graphic designer with a keen eye for aesthetics. His work spans branding, web design, and illustration, and he is known for his ability to bring creative visions to life. Outside of work, John is a music enthusiast and enjoys playing the guitar.');
+insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description, file_image) 
+values (106, 'sample_john', 'john0006', 'John', 'Williams', 'male', '0718765432', 'sample_john.pogaty@gmail.com', '567 Pine Street, Hometown, NY', 'John is a talented graphic designer with a keen eye for aesthetics. His work spans branding, web design, and illustration, and he is known for his ability to bring creative visions to life. Outside of work, John is a music enthusiast and enjoys playing the guitar.', 'sample-6.png');
 
 -- Client 107
 insert into client (id, username, password, firstname, lastname, gender, phone_number, mail, address, description) 
