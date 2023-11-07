@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import poga.docs.partnermicroservice.controllers.CollaboratorController;
 import poga.docs.partnermicroservice.models.Collaborator;
-import poga.docs.partnermicroservice.models.CollaboratorDTO;
 import poga.docs.partnermicroservice.models.Services;
 import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
 import poga.docs.partnermicroservice.services.CollaboratorService;

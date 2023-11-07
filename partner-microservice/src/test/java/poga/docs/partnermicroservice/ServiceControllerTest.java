@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import poga.docs.partnermicroservice.controllers.ServiceController;
-import poga.docs.partnermicroservice.models.Collaborator;
 import poga.docs.partnermicroservice.models.ServiceDTO;
 import poga.docs.partnermicroservice.models.Services;
 import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
