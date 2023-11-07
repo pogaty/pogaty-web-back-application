@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -36,10 +35,9 @@ public class Collaborator {
     private String name;
 
     // Releationship to entity 1-->M
-    @JsonProperty("Service")
     @OneToMany(mappedBy = "collaborator")
     @JsonIgnoreProperties(value = { "collab_id", "email", "password", "name", "service", "fileImage" })
-    private List<Service> service;
+    private List<Services> service;
 
     private String fileImage;
 
@@ -47,7 +45,7 @@ public class Collaborator {
 
     }
 
-    public Collaborator(Long collab_id, String email, String password, String name, List<Service> service,
+    public Collaborator(Long collab_id, String email, String password, String name, List<Services> service,
             String fileImage) {
         this.collab_id = collab_id;
         this.email = email;
@@ -89,11 +87,12 @@ public class Collaborator {
         this.name = name;
     }
 
-    public List<Service> getService() {
+    @JsonIgnoreProperties("collaborator")
+    public List<Services> getService() {
         return service;
     }
 
-    public void setService(List<Service> service) {
+    public void setService(List<Services> service) {
         this.service = service;
     }
 

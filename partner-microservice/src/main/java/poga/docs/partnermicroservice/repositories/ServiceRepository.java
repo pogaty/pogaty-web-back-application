@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import poga.docs.partnermicroservice.models.Service;
+import poga.docs.partnermicroservice.models.Services;
 
-public interface ServiceRepository extends CrudRepository<Service,Long>{
-    public List<Service> findAll();
-    public List<Service> findByNameStartingWith(String prefix);
+public interface ServiceRepository extends CrudRepository<Services,Long>{
+    public List<Services> findAll();
+    public List<Services> findByNameStartingWith(String prefix);
     
 }

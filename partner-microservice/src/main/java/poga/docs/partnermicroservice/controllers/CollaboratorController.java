@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import poga.docs.partnermicroservice.ServiceMapper;
 import poga.docs.partnermicroservice.models.Collaborator;
 import poga.docs.partnermicroservice.models.CollaboratorDTO;
+import poga.docs.partnermicroservice.models.Services;
 import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
 import poga.docs.partnermicroservice.services.CollaboratorService;
 
@@ -51,7 +52,7 @@ public class CollaboratorController {
     }
 
     @GetMapping("/{collaborator_id}")
-    public ResponseEntity<?> getAllColloabratorByCollaborator_id(@PathVariable long collaborator_id) {
+    public ResponseEntity<?> getColloabratorByCollaborator_id(@PathVariable long collaborator_id) {
         Optional<Collaborator> optCollaborator = collaboratorRepository.findById(collaborator_id);
 
         // check if id exists in db
@@ -65,13 +66,15 @@ public class CollaboratorController {
     }
 
     @GetMapping("/search/{name}")
-    public ResponseEntity<?> getNameStartingWithColloabrator(@PathVariable String name) {
-        if (name.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colloabrator Not Found");
+    public ResponseEntity<?> getNameColloabrator(@PathVariable String name) {
+        Optional<Collaborator> collabOpt = collaboratorService.findByName(name);
+
+        if (!collabOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("collab not found.");
         }
 
-        List<Collaborator> collaborators = collaboratorService.findByNameCollaboratorStartingWith(name);
-        return ResponseEntity.ok(collaborators);
+        Collaborator collab = collabOpt.get();
+        return ResponseEntity.ok(collab);
     }
 
     @PutMapping("/{collaborator_id}/image")
@@ -139,8 +142,25 @@ public class CollaboratorController {
         }
     }
 
+    @GetMapping("/{collab_id}/services")
+    public ResponseEntity<?> getServicesByCollabId(@PathVariable Long collab_id) {
+        List<Services> services = collaboratorService.findServiceByCollabId(collab_id);
+        
+        if (services.isEmpty()) {
+            return ResponseEntity.status(204).body("no services content.");
+        }
+
+        return ResponseEntity.ok(services);
+    }
+
     @PostMapping
     public ResponseEntity<String> createCollaborator(@RequestBody Collaborator collaborator) {
+        Optional<Collaborator> collabOpt = collaboratorService.findByName(collaborator.getName());
+
+        if (collabOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("this name already exist!");
+        }
+
         collaboratorRepository.save(collaborator);
         return ResponseEntity.ok("Collaborator created");
     }

@@ -16,11 +16,11 @@ public class ServiceService {
         this.serviceRepository = serviceRepository;
     }
 
-    public List<poga.docs.partnermicroservice.models.Service> findAllService() {
+    public List<poga.docs.partnermicroservice.models.Services> findAllService() {
         return this.serviceRepository.findAll();
     }
 
-    public List<poga.docs.partnermicroservice.models.Service> findByNameServiceStartingWith(String prefix) {
+    public List<poga.docs.partnermicroservice.models.Services> findByNameServiceStartingWith(String prefix) {
         return this.serviceRepository.findByNameStartingWith(prefix);
     }
 }

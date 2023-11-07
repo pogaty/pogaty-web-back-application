@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import poga.docs.partnermicroservice.models.Collaborator;
 import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
+import poga.docs.partnermicroservice.models.Services;
 
 @Service
 public class CollaboratorService {
@@ -31,8 +32,16 @@ public class CollaboratorService {
         return this.collaboratorRepository.findAll();
     }
 
-    public List<Collaborator> findByNameCollaboratorStartingWith(String prefix) {
-        return this.collaboratorRepository.findByNameStartingWith(prefix);
+    public Optional<Collaborator> findByName(String name) {
+        return this.collaboratorRepository.findByName(name);
+    }
+
+    public Optional<Collaborator> findById(Long id) {
+        return this.collaboratorRepository.findById(id);
+    }
+
+    public List<Services> findServiceByCollabId(Long id) {
+        return this.collaboratorRepository.findServiceByCollabId(id);
     }
 
     public String uploadImageToFileSystem(MultipartFile file) throws IOException {

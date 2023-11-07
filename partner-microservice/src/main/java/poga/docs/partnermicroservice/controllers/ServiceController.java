@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poga.docs.partnermicroservice.ServiceMapper;
-import poga.docs.partnermicroservice.models.Service;
+import poga.docs.partnermicroservice.models.Collaborator;
+import poga.docs.partnermicroservice.models.Services;
 import poga.docs.partnermicroservice.models.ServiceDTO;
+import poga.docs.partnermicroservice.repositories.CollaboratorRepository;
 import poga.docs.partnermicroservice.repositories.ServiceRepository;
+import poga.docs.partnermicroservice.services.CollaboratorService;
 import poga.docs.partnermicroservice.services.ServiceService;
 
 @RestController
@@ -26,14 +29,18 @@ import poga.docs.partnermicroservice.services.ServiceService;
 public class ServiceController {
     private final ServiceRepository serviceRepository;
     private final ServiceService serviceService;
+    private final CollaboratorService collaboratorService;
+    private final CollaboratorRepository collaboratorRepository;
     private final ServiceMapper serviceMapper;
 
     @Autowired
     public ServiceController(ServiceRepository serviceRepository, ServiceService serviceService,
-            ServiceMapper serviceMapper) {
+            ServiceMapper serviceMapper, CollaboratorService collaboratorService, CollaboratorRepository collaboratorRepository) {
         this.serviceRepository = serviceRepository;
         this.serviceService = serviceService;
         this.serviceMapper = serviceMapper;
+        this.collaboratorService = collaboratorService;
+        this.collaboratorRepository =collaboratorRepository;
     }
 
     @GetMapping()
@@ -42,8 +49,8 @@ public class ServiceController {
     }
 
     @GetMapping("/{service_id}")
-    public ResponseEntity getAllServiceByservice_id(@PathVariable long service_id) {
-        Optional<Service> optService = serviceRepository.findById(service_id);
+    public ResponseEntity<?> getAllServiceByservice_id(@PathVariable long service_id) {
+        Optional<Services> optService = serviceRepository.findById(service_id);
 
         // check if id exists in db
         if (!optService.isPresent()) {
@@ -51,35 +58,36 @@ public class ServiceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service Not Found");
 
         }
-        Service services = optService.get();
+        Services services = optService.get();
         return ResponseEntity.ok(services);
     }
 
-    @GetMapping("/search/{name}")
-    public ResponseEntity<?> getNameStartingWithService(@PathVariable String name) {
-        if (name.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service Not Found");
+
+    @PostMapping("/by/{collab_id}")
+    public ResponseEntity<String> createService(@PathVariable Long collab_id, @RequestBody Services service) {
+        Optional<Collaborator> collabOpt = collaboratorService.findById(collab_id);
+
+        if (!collabOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("collab not found.");
         }
-
-        List<Service> services = serviceService.findByNameServiceStartingWith(name);
-        return ResponseEntity.ok(services);
-    }
-
-    @PostMapping
-    public ResponseEntity<String> createService(@RequestBody Service service) {
+        Collaborator collab = collabOpt.get();
+        service.setCollaborator(collab);
         serviceRepository.save(service);
+
+        collab.getService().add(service);
+        collaboratorRepository.save(collab);
         return ResponseEntity.ok("Service created");
     }
 
     @PatchMapping("/{service_id}")
     public ResponseEntity<String> partialUpdateService(@PathVariable Long service_id,
             @RequestBody ServiceDTO serviceDTO) {
-        Optional<Service> optPage = serviceRepository.findById(service_id);
+        Optional<Services> optPage = serviceRepository.findById(service_id);
         if (!optPage.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found");
         }
 
-        Service services = optPage.get();
+        Services services = optPage.get();
         serviceMapper.updateServiceFromDto(serviceDTO, services);
         serviceRepository.save(services);
         return ResponseEntity.ok("Service updated");

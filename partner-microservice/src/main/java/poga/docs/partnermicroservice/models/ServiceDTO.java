@@ -1,7 +1,5 @@
 package poga.docs.partnermicroservice.models;
 
-import javax.persistence.Column;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ServiceDTO {

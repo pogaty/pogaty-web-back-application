@@ -9,7 +9,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import poga.docs.partnermicroservice.models.Collaborator;
 import poga.docs.partnermicroservice.models.CollaboratorDTO;
 
-import poga.docs.partnermicroservice.models.Service;
+import poga.docs.partnermicroservice.models.Services;
 import poga.docs.partnermicroservice.models.ServiceDTO;
 
 @Mapper(componentModel = "spring")
@@ -19,5 +19,5 @@ public interface ServiceMapper {
     void updateCollaboratorFromDto(CollaboratorDTO dto , @MappingTarget Collaborator collaborator);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateServiceFromDto(ServiceDTO dto , @MappingTarget Service service);
+    void updateServiceFromDto(ServiceDTO dto , @MappingTarget Services service);
 }

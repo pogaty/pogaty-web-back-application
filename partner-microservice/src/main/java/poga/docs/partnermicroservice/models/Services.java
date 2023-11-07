@@ -1,7 +1,5 @@
 package poga.docs.partnermicroservice.models;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,16 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Services")
-public class Service {
+public class Services {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("service_id")
@@ -42,11 +38,11 @@ public class Service {
     @JsonIgnoreProperties("Service")
     private Collaborator collaborator;
 
-    Service() {
+    Services() {
 
     }
 
-    public Service(String name, String description, String category, String serviceType, Collaborator collaborator) {
+    public Services(String name, String description, String category, String serviceType, Collaborator collaborator) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -94,6 +90,7 @@ public class Service {
         this.serviceType = serviceType;
     }
 
+    @JsonIgnoreProperties({"service", "fileImage", "password"})
     public Collaborator getCollaborator() {
         return collaborator;
     }
