@@ -36,7 +36,7 @@ public class CollaboratorController {
     private final CollaboratorService collaboratorService;
     private final ServiceMapper serviceMapper;
 
-    private final String FOLDER_PATH = "C:\\Users\\CAMT\\Desktop\\deployment\\pogaty-web-back-application\\partner-microservice\\Asset-Image\\";
+    private final String FOLDER_PATH = System.getProperty( "user.dir" ).concat("\\partner-microservice\\Asset-image\\");
 
     @Autowired
     public CollaboratorController(CollaboratorRepository collaboratorRepository,
