@@ -38,7 +38,7 @@ public class Services {
     @JsonIgnoreProperties("Service")
     private Collaborator collaborator;
 
-    Services() {
+    public Services() {
 
     }
 
