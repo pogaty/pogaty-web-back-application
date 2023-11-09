@@ -61,6 +61,8 @@ public class Client {
     @JsonProperty("rating")
     private Long rating;
 
+    private String[] category;
+
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private List<Problem> problem;
@@ -175,6 +177,16 @@ public class Client {
     public void setFileImage(String fileImage) {
         this.fileImage = fileImage;
     }
+
+    public String[] getCategory() {
+        return category;
+    }
+
+    public void setCategory(String[] category) {
+        this.category = category;
+    }
+
+    
  
     
 }
