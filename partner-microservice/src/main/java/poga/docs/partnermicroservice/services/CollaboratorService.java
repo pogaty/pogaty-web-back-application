@@ -21,8 +21,8 @@ public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
 
-    private final String FOLDER_PATH = "Asset-image/";
-    
+    private final String FOLDER_PATH = "Asset-Image/";
+
     @Autowired
     CollaboratorService(CollaboratorRepository collaboratorRepository) {
         this.collaboratorRepository = collaboratorRepository;
