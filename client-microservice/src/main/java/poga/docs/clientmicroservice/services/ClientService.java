@@ -18,7 +18,7 @@ import poga.docs.clientmicroservice.repositories.ClientRepository;
 @Service
 public class ClientService {
     private final ClientRepository clientRepository;
-    private final String FOLDER_PATH = System.getProperty( "user.dir" ).concat("\\client-microservice\\Asset-image\\");
+    private final String FOLDER_PATH = "Asset-image/";
 
     @Autowired
     ClientService(ClientRepository clientRepository) {

@@ -34,7 +34,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientRepository clientRepository;
     private final ServiceMapper serviceMapper;
-    private final String FOLDER_PATH = System.getProperty( "user.dir" ).concat("\\client-microservice\\Asset-image\\");
+    private final String FOLDER_PATH = "Asset-image/";
   
 
     @Autowired
